@@ -1,12 +1,23 @@
 {% extends 'base.html'%} {% block content %}
-<div class="row">
-    <form class="col s8 offset-s2">
-        <div class="row">
-            <div class="input-field col s12">
-                <input placeholder="Username" id="first_name" type="text" class="validate">
-                <label for="username">Username</label>
+{% for review in reviews %}
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel grey lighten-5 z-depth-1">
+                <div class="row valign-wrapper">
+                    <div class="col s2">
+                        <img src="{{ review.picture_link }}" alt="game picture" class="circle card-img">
+                    </div>
+                    <div class="col s10">
+                        <span class="black-text">
+                            <p>{{ review.description }}</p>
+                            <p class="right-align">{{ review.username }} - Rating: {{ review.rating }}/5</p>
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
-    </form>
+    </div>
 </div>
+{% endfor %}
 {% endblock %}

@@ -11,51 +11,82 @@
 </head>
 
 <body>
-    <nav>
-        <div class="nav-wrapper">
-            <a href="{{url_for('base')}}" class="brand-logo">Logo</a>
-            <a href="#" data-target="mobile" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
-            <ul class="right hide-on-med-and-down">
+    <!-- navbar -->
+    <header>
+        <nav>
+            <div class="nav-wrapper">
+                <a href="{{url_for('browse')}}" class="brand-logo">Logo</a>
+                <a href="#" data-target="mobile" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="{{url_for('browse')}}">Browse Reviews</a></li>
+                    <li><a href="{{url_for('your_reviews')}}">Your Reviews</a></li>
+                    <li><a href="#">Top Reviews</a></li>
+                    <li><a href="#">All Games</a></li>
+                    <li><a href="{{url_for('login')}}">Login/Sign Up!</a></li>
+                </ul>
+            </div>
+            <ul class="sidenav right" id="mobile">
+                <a href="{{url_for('browse')}}">
+                    <img src="{{url_for('static', filename='images/me-flower.jpg')}}" alt="image" class="nav-img">
+                </a>
                 <li><a href="{{url_for('browse')}}">Browse Reviews</a></li>
                 <li><a href="{{url_for('your_reviews')}}">Your Reviews</a></li>
                 <li><a href="#">Top Reviews</a></li>
                 <li><a href="#">All Games</a></li>
                 <li><a href="{{url_for('login')}}">Login/Sign Up!</a></li>
             </ul>
+        </nav>
+    </header>
+    <!--- main content --->
+    <main>
+        <div class="container">
+            <div class="row base-content">
+                <!-- content that is inserted by other templates -->
+                {% block content %} {% endblock %}
+            </div>
         </div>
-        <ul class="sidenav right" id="mobile">
-            <a href="{{url_for('base')}}">
-                <img src="{{url_for('static', filename='images/me-flower.jpg')}}" alt="image"class="nav-img">
-            </a>
-            <li><a href="{{url_for('browse')}}">Browse Reviews</a></li>
-            <li><a href="{{url_for('your_reviews')}}">Your Reviews</a></li>
-            <li><a href="#">Top Reviews</a></li>
-            <li><a href="#">All Games</a></li>
-            <li><a href="{{url_for('login')}}">Login/Sign Up!</a></li>
-        </ul>
-    </nav>
-    <div class="container">
-        <div class="row base-content">
-            {% block content %} {% endblock %}
-        </div>
-    </div>
-
-    <h1>TEST</h1>
-    <p>TESTING</p>
-    <p>{{ dbase }}</p>
-    {% for game in games %}
-    <p>{{ game.name }}</p>
-    <p>{{ game.publisher }}</p>
-    {% endfor %}
-    {% for review in reviews %}
-    <p>{{ review.description }}</p>
-    <p>{{ review.rating }}</p>
-    {% endfor %}
+    </main>
+    <!-- footer -->
+    <footer class="page-footer teal darken-1">
+        <div class="container">
+            <div class="row">
+                <h6 class="center-align">Social links from the creator of the page</h6>
+            </div>
+            <div class="row">
+                <div class="col s6 m3">
+                    <a href="https://www.facebook.com/john.sletvoldhafenrichter" target="_blank" class="btn-small footer-link">
+                        <i class="fab fa-facebook-square" class="white"></i>
+                        <span>Facebook</span>
+                    </a>
+                </div>
+                <div class="col s6 m3">
+                    <a href="https://twitter.com/Mediato32898222" target="_blank" class="btn-small footer-link">
+                        <i class="fab fa-twitter-square"></i>
+                        <span>Twitter</span>
+                    </a>
+                </div>
+                <div class="col s6 m3">
+                    <a href="https://www.linkedin.com/in/john-sletvold-hafenrichter" target="_blank" class="btn-small footer-link">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                </div>
+                <div class="col s6 m3">
+                    <a href="https://github.com/johnsletvoldhafenrichter" target="_blank" class="btn-small footer-link">
+                        <i class="fab fa-github-square"></i>
+                        <span>GitHub</span>
+                    </a>
+                </div>
+            </div>
+    </footer>
+    <script src="https://kit.fontawesome.com/efe33daf5d.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
         $(document).ready(function () {
             $('.sidenav').sidenav();
+            $('.fixed-action-btn').floatingActionButton();
+            $('select').formSelect();
         });
     </script>
 </body>

@@ -1,8 +1,39 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
 
 .nav-img {
     max-width: 100%;
 }
 
 .base-content {
-    margin-top: 10rem;
+    margin-top: 5em;
+}
+
+.invalid-input {
+    border-radius: 20px;
+    background-color: #ef5350;
+    color: antiquewhite;
+}
+
+.card-img {
+    max-width: 100%;
+}
+
+a {
+    text-transform: none;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
+
+.footer-link {
+    min-width: 100%;
+    margin-top: 0.25rem;
 }
