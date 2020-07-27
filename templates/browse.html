@@ -1,23 +1,27 @@
 {% extends 'base.html'%} {% block content %}
-{% for review in reviews %}
-<div class="container">
-    <div class="row">
-        <div class="col s12">
-            <div class="card-panel grey lighten-5 z-depth-1">
-                <div class="row valign-wrapper">
-                    <div class="col s2">
-                        <img src="{{ review.picture_link }}" alt="game picture" class="circle card-img">
-                    </div>
-                    <div class="col s10">
-                        <span class="black-text">
-                            <p>{{ review.description }}</p>
-                            <p class="right-align">{{ review.username }} - Rating: {{ review.rating }}/5</p>
-                        </span>
+{% for game in games %}
+    {% for review in reviews %}
+        {% if game.name == review.game_name %}
+        <div class="row">
+            <div class="col s12">
+                <div class="card-panel grey lighten-5 z-depth-1">
+                    <div class="row valign-wrapper">
+                        <div class="col s4">
+                            <a href="">
+                                <img src="{{ game.picture_link }}" alt="game picture" class="circle card-img">
+                            </a>
+                        </div>
+                        <div class="col s8">
+                            <span class="black-text">
+                                <p>{{ review.description }}</p>
+                                <p class="right-align">{{ review.username }} - Rating: {{ review.rating }}/5</p>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+        {% endif %}
+    {% endfor %}
 {% endfor %}
 {% endblock %}

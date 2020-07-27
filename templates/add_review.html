@@ -5,7 +5,7 @@
         <div class="row">
             <div class="input-field col s12">
                 <i class="material-icons prefix">games</i>
-                <select id="game_name" name="game_name">
+                <select required id="game_name" name="game_name">
                     <option value="" disabled selected>Choose Game</option>
                     {% for game in gamelist %}
                     <option value="{{game.name}}">{{game.name}}</option>
@@ -17,14 +17,14 @@
         <div class="row">
             <div class="input-field col s12">
                 <i class="material-icons prefix">rate_review</i>
-                <textarea name="review" id="review" class="materialize-textarea"></textarea>
+                <textarea required name="review" id="review" class="materialize-textarea"></textarea>
                 <label for="review">Review</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
                 <i class="material-icons prefix">star</i>
-                <select name="rating" id="rating">
+                <select required name="rating" id="rating">
                     <option value="" disabled selected>Choose your Rating</option>
                     <option value="1">1</option>
                     <option value="2">2</option>

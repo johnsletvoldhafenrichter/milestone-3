@@ -17,7 +17,7 @@ def add_review():
 @app.route('/insert_review', methods=['POST'])
 def insert_review():
     review = mongo.db.reviews
-    review.insert({'username': session['username'], 'description': request.form['review'], 'rating': request.form['rating']})
+    review.insert({'game_name': request.form['game_name'], 'username': session['username'], 'description': request.form['review'], 'rating': request.form['rating']})
     return redirect(url_for('your_reviews'))
 
 
@@ -30,9 +30,10 @@ def your_reviews():
     return render_template('no_login.html')
 
 @app.route('/browse_reviews')
-def browse():
+def browse(): 
     return render_template('browse.html',
-            reviews=mongo.db.reviews.find())
+            reviews=mongo.db.reviews.find(),
+            games=mongo.db.game_list.find())
 
 @app.route('/sign_up', methods=['POST', 'GET'])
 def sign_up():
