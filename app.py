@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, redirect, request, url_for, request, session
 from flask_pymongo import PyMongo
 import bcrypt
+import json
 
 app = Flask(__name__)
 app.config["MONGO_DBNAME"] = 'game_reviews'
@@ -29,11 +30,24 @@ def your_reviews():
                                 ureviews=mongo.db.reviews.find({'username': session['username']}))
     return render_template('no_login.html')
 
-@app.route('/browse_reviews')
+@app.route('/browse_reviews', methods=['POST', 'GET'])
 def browse(): 
+    if request.method == 'POST':
+        game_json = request.form['game_select']
+        game_objects = game_json.split(',')
+        game_name_slice_front = game_objects[1][10:]
+        game_name = game_name_slice_front[:-1]
+        game_pic_slice_front = game_objects[3][18:]
+        game_pic = game_pic_slice_front[:-2]
+        
+        return render_template('browse.html',
+                                reviews=mongo.db.reviews.find(),
+                                games=mongo.db.game_list.find(),
+                                name=game_name,
+                                picture=game_pic)
     return render_template('browse.html',
-            reviews=mongo.db.reviews.find(),
-            games=mongo.db.game_list.find())
+                            reviews=mongo.db.reviews.find(),
+                            games=mongo.db.game_list.find())
 
 @app.route('/sign_up', methods=['POST', 'GET'])
 def sign_up():

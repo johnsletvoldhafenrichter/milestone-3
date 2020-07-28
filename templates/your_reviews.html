@@ -5,26 +5,27 @@
     </div>
 </div>
 {% for review in ureviews %}
-    <div class="row">
-        <div class="col s12 m8 offset-m2 l6 offset-l3">
-            <div class="card-panel grey lighten-5 z-depth-1">
-                <div class="row valign-wrapper">
-                    <div class="col s2">
-                        <img src="#" alt="" class="responsive-img card-img">
-                    </div>
-                    <div class="col s10">
-                        <span class="black-text">
-                            <p>{{ review.description }}</p>
-                            <p>Rating: {{ review.rating }}/5</p>
-                            <p class="right-align">- {{ review.username }}</p>
-                        </span>
-                    </div>
+<div class="row">
+    <div class="col s12 m8 offset-m2 l6 offset-l3">
+        <div class="card-panel grey lighten-5 z-depth-1">
+            <div class="row valign-wrapper">
+                <div class="col s2">
+                    <img src="#" alt="" class="responsive-img card-img">
+                </div>
+                <div class="col s10">
+                    <span class="black-text">
+                        <p>{{ review.description }}</p>
+                        <p>Rating: {{ review.rating }}/5</p>
+                        <p class="right-align">- {{ review.username }}</p>
+                    </span>
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endfor %}
 <div class="fixed-action-btn action-button">
-    <a href="{{ url_for('add_review') }}" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+    <a href="{{ url_for('add_review') }}" class="btn-floating btn-large waves-effect waves-light red tooltipped"
+        data-position="left" data-tooltip="Add a review!"><i class="material-icons">add</i></a>
 </div>
 {% endblock %}
