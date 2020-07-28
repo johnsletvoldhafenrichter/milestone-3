@@ -10,6 +10,11 @@ app.config["MONGO_URI"] = os.getenv('client', 'mongodb://localhost')
 
 mongo = PyMongo(app)
 
+@app.route('/all_games')
+def all_games():
+    return render_template('all_games.html',
+                            gamelist=mongo.db.game_list.find())
+
 @app.route('/add_review')
 def add_review():
     return render_template('add_review.html',
@@ -39,7 +44,7 @@ def browse():
         game_name_slice_front = game_objects[1][10:]
         game_name = game_name_slice_front[:-1]
         game_pic_slice_front = game_objects[3][18:]
-        game_pic = game_pic_slice_front[:-2]
+        game_pic = game_pic_slice_front[:-1]
         
         return render_template('browse.html',
                                 reviews=mongo.db.reviews.find(),

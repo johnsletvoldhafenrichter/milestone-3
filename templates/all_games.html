@@ -1,0 +1,18 @@
+{% extends 'base.html'%} {% block content %}
+{% for game in gamelist %}
+  <div class="col s12 m6">
+    <div class="card ">
+      <div class="card-image">
+        <img src="{{ game.picture_link }}">
+        <span class="card-title">{{ game.name }}</span>
+      </div>
+      <div class="card-content">
+        <p> {{ game.publisher }}</p>
+      </div>
+      <div class="card-action">
+        <a href="{{ game.wiki_link }}">Learn more!</a>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+{% endblock %}

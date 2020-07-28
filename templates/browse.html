@@ -1,7 +1,7 @@
 {% extends 'base.html'%} {% block content %}
 <div class="row">
     <form action="{{ url_for('browse') }}" method="POST">
-        <div class="col s6">
+        <div class="col s8">
             <select name="game_select" id="game_select" class="icons">
                 {% if name %}
                 <option value="{{ name }}" disabled selected>{{ name }}</option>
@@ -14,7 +14,7 @@
             </select>
             <label>Choose your game in order to see reviews</label>
         </div>
-        <div class="col s6 right-align">
+        <div class="col s4 right-align">
             <button class="btn waves-effect waves-light" type="submit" name="action">Search
                 <i class="material-icons right">search</i>
             </button>
