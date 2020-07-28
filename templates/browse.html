@@ -3,7 +3,11 @@
     <form action="{{ url_for('browse') }}" method="POST">
         <div class="col s6">
             <select name="game_select" id="game_select" class="icons">
+                {% if name %}
+                <option value="{{ name }}" disabled selected>{{ name }}</option>
+                {% else %}
                 <option value="" disabled selected>Choose your option</option>
+                {% endif %}
                 {% for game in games %}
                 <option value="{{ game }}" data-icon="{{ game.picture_link }}">{{ game.name }}</option>
                 {% endfor %}
@@ -18,27 +22,39 @@
     </form>
 </div>
 </div>
-{% for review in reviews %}
-{% print review.game_name %}
-{% print name %}
-{% print picture %}
-{% if name == review.game_name %}
-<div class="col s12 m7">
-    <h2 class="header">{{ name }}</h2>
-    <div class="card horizontal">
-        <div class="card-image">
-            <img src="{{ picture }}">
-        </div>
-        <div class="card-stacked">
-            <div class="card-content">
-                <p>{{ review.description }}</p>
+{% if name %}
+<div class="row">
+    <div class="col s12">
+        <div class="card horizontal">
+            <div class="card-image">
+                <img src="{{ picture }}">
             </div>
-            <div class="card-action">
-                <a href="#">wikipedia link</a>
+            <div class="card-stacked">
+                <div class="card-content">
+                    <p>{{ name }}</p>
+                </div>
+                <div class="card-action">
+                    <a href="#">wikipedia link</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
+<div class="row">
+    {% for review in reviews %}
+    {% if name == review.game_name %}
+    <div class="col s12 m6">
+        <div class="card-panel teal">
+            <div class="white-text">{{ review.description }}
+            </div>
+            <div class="divider-card"></div>
+            <div class="white-text right-align">
+                {{ review.username }} - Rating: {{ review.rating }}/5
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
 {% endif %}
-{% endfor %}
 {% endblock %}

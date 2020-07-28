@@ -27,7 +27,8 @@ def insert_review():
 def your_reviews():
     if 'username' in session:
         return render_template('your_reviews.html',
-                                ureviews=mongo.db.reviews.find({'username': session['username']}))
+                                ureviews=mongo.db.reviews.find({'username': session['username']}),
+                                game_list=mongo.db.game_list.find())
     return render_template('no_login.html')
 
 @app.route('/browse_reviews', methods=['POST', 'GET'])

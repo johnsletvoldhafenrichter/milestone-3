@@ -27,6 +27,22 @@ body {
     height: 10vh;
 }
 
+.card .card-image img {
+    max-height: 25vh;
+}
+
+.divider-card {
+    border: 1px solid black;
+    width: 80%;
+    margin: 2rem 10% 1rem 10%;
+    background-color: black;
+}
+
+.heading-your-reviews {
+    text-transform: capitalize;
+    font-size: larger;
+}
+
 a {
     text-transform: none;
     text-align: center;

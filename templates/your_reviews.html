@@ -5,20 +5,17 @@
     </div>
 </div>
 {% for review in ureviews %}
-<div class="row">
-    <div class="col s12 m8 offset-m2 l6 offset-l3">
-        <div class="card-panel grey lighten-5 z-depth-1">
-            <div class="row valign-wrapper">
-                <div class="col s2">
-                    <img src="#" alt="" class="responsive-img card-img">
-                </div>
-                <div class="col s10">
-                    <span class="black-text">
-                        <p>{{ review.description }}</p>
-                        <p>Rating: {{ review.rating }}/5</p>
-                        <p class="right-align">- {{ review.username }}</p>
-                    </span>
-                </div>
+<div class="col s12 m6">
+    <div class="card-panel teal">
+        <div class="row">
+            <div class="white-text center-align heading-your-reviews">{{ review.game_name }}</div>
+        </div>
+        <div class="row">
+            <div class="white-text">{{ review.description }}
+            </div>
+            <div class="divider-card"></div>
+            <div class="white-text right-align">
+                {{ review.username }} - Rating: {{ review.rating }}/5
             </div>
         </div>
     </div>
