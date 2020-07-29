@@ -238,7 +238,7 @@ def admin_tab():
 
 @app.route('/')
 def index():
-    return redirect(url_for('browse'))
+    return redirect(url_for('login'))
 
 # config/startup
 
