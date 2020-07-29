@@ -18,6 +18,9 @@
                 <a href="{{url_for('browse')}}" class="brand-logo">Logo</a>
                 <a href="#" data-target="mobile" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
                 <ul class="right hide-on-med-and-down">
+                    {% if session['admin'] %}
+                    <li><a href="{{url_for('admin_tab')}}">Admin Tab</a></li>
+                    {% endif %}
                     <li><a href="{{url_for('browse')}}">Browse Reviews</a></li>
                     <li><a href="{{url_for('your_reviews')}}">Your Reviews</a></li>
                     <li><a href="#">Top Reviews</a></li>
@@ -88,6 +91,8 @@
             $('.fixed-action-btn').floatingActionButton();
             $('select').formSelect();
             $('.tooltipped').tooltip();
+            $('.collapsible').collapsible();
+            $('.modal').modal();
         });
     </script>
 </body>

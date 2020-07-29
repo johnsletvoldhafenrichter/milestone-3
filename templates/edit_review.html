@@ -1,14 +1,24 @@
 {% extends 'base.html' %} {% block content %}
-<h3>Add Review</h3>
+<h3>Edit Review</h3>
 <div class="row">
-    <form action="{{ url_for('insert_review') }}" method="POST" class="col s12">
+    <form action="{{url_for('update_review', review_id=review._id)}}" method="POST" class="col s12">
+        <div class="row">
+            <div class="input-field col s12">
+                <input required readonly placeholder="Username" name="username" id="username" value="{{review.username}}" type="text" class="validate">
+                <label for="username">Username</label>
+              </div>
+        </div>
         <div class="row">
             <div class="input-field col s12">
                 <i class="material-icons prefix">games</i>
                 <select required id="game_name" name="game_name">
-                    <option value="" disabled selected>Choose Game</option>
+                    <option value="" disabled selected>Choose your game!</option>
                     {% for game in gamelist %}
-                    <option value="{{game.name}}">{{game.name}}</option>
+                        {% if game.name == review.game_name %}
+                        <option value="{{game.name}}" selected>{{game.name}}</option>
+                        {% else %}
+                        <option value="{{game.name}}">{{game.name}}</option>
+                        {% endif %}
                     {% endfor %}
                 </select>
                 <label>Game</label>
@@ -17,7 +27,7 @@
         <div class="row">
             <div class="input-field col s12">
                 <i class="material-icons prefix">rate_review</i>
-                <textarea required name="review" id="review" class="materialize-textarea"></textarea>
+                <textarea required name="review" id="review" class="materialize-textarea">{{review.description}}</textarea>
                 <label for="review">Review</label>
             </div>
         </div>
@@ -25,12 +35,21 @@
             <div class="input-field col s12">
                 <i class="material-icons prefix">star</i>
                 <select required name="rating" id="rating">
-                    <option value="" disabled selected>Choose your Rating</option>
+                    {% if review.rating %}
+                    <option selected value="{{review.rating}}">{{ review.rating}}</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>
+                    {% else %}
+                    <option value="" disabled selected>Choose your rating!</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    {% endif %}
                 </select>
                 <label for="rating">Rating</label>
             </div>
