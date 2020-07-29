@@ -14,6 +14,7 @@ mongo = PyMongo(app)
 admin_password = os.getenv('admin_password')
 admin_user = os.getenv('admin_user')
 admin_email = os.getenv('admin_email')
+app.secret_key = os.getenv("SECRET", "randomstring")
 
 # creating database functions
 
@@ -242,7 +243,6 @@ def index():
 # config/startup
 
 if __name__ == '__main__':
-    app.secret_key = os.urandom(24)
     app.run(host=os.environ.get('IP'),
             port=os.environ.get('PORT'),
             debug=True)
