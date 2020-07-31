@@ -1,20 +1,26 @@
+# Importing modules
 import os
 from dotenv import load_dotenv
-from flask import Flask, render_template, redirect, request, url_for, request, session
-from flask_pymongo import PyMongo
+from flask import (
+    Flask, render_template, redirect, request, url_for, request, session)
+from flask_pymongo import PyMongo, pymongo
 from bson.objectid import ObjectId
 import bcrypt
 import json
 
+# Declaring app name
 app = Flask(__name__)
 app.config["MONGO_DBNAME"] = 'game_reviews'
 app.config["MONGO_URI"] = os.environ.get('client', 'mongodb://localhost')
 
-mongo = PyMongo(app)
+# Config settings and environmental variables
 admin_password = os.environ.get('admin_password')
 admin_user = os.environ.get('admin_user')
 admin_email = os.environ.get('admin_email')
 app.secret_key = os.environ.get("SECRET", "randomstring")
+
+
+mongo = PyMongo(app)
 
 # creating database functions
 
