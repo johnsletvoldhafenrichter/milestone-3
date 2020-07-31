@@ -8,7 +8,7 @@
                 {% else %}
                 <option value="" disabled selected>Choose your option</option>
                 {% endif %}
-                {% for game in game %}
+                {% for game in games %}
                 <option value="{{ game }}" data-icon="{{ game.picture_link }}">{{ game.name }}</option>
                 {% endfor %}
             </select>
@@ -41,7 +41,7 @@
     </div>
 </div>
 <div class="row">
-    {% for review in review %}
+    {% for review in reviews %}
     {% if name == review.game_name %}
     <div class="col s12 m6">
         <div class="card-panel teal">
