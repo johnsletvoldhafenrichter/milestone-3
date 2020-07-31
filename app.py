@@ -72,8 +72,8 @@ def browse():
                                 name=game_name,
                                 picture=game_pic)
     return render_template('browse.html',
-                            reviews=mongo.db.reviews.find(),
-                            games=mongo.db.game_list.find())
+                            review=mongo.db.reviews.find(),
+                            game=mongo.db.game_list.find())
 
 @app.route('/your_reviews')
 def your_reviews():
