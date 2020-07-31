@@ -8,13 +8,13 @@ import json
 
 app = Flask(__name__)
 app.config["MONGO_DBNAME"] = 'game_reviews'
-app.config["MONGO_URI"] = os.getenv('client', 'mongodb://localhost')
+app.config["MONGO_URI"] = os.environ.get('client', 'mongodb://localhost')
 
 mongo = PyMongo(app)
-admin_password = os.getenv('admin_password')
-admin_user = os.getenv('admin_user')
-admin_email = os.getenv('admin_email')
-app.secret_key = os.getenv("SECRET", "randomstring")
+admin_password = os.environ.get('admin_password')
+admin_user = os.environ.get('admin_user')
+admin_email = os.environ.get('admin_email')
+app.secret_key = os.environ.get("SECRET", "randomstring")
 
 # creating database functions
 
