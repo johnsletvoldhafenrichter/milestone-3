@@ -2,7 +2,7 @@
 <div class="row">
     <form action="{{ url_for('browse') }}" method="POST">
         <div class="col s8">
-            <select name="game_select" id="game_select" class="icons">
+            <select required name="game_select" id="game_select" class="icons">
                 {% if name %}
                 <option value="{{ name }}" disabled selected>{{ name }}</option>
                 {% else %}
@@ -34,27 +34,34 @@
                     <p>{{ name }}</p>
                 </div>
                 <div class="card-action">
-                    <a href="#">wikipedia link</a>
+                    <a href="{{wiki_link}}" target="_blank">wikipedia link</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <div class="row">
-    {% for review in reviews %}
-    {% if name == review.game_name %}
-    <div class="col s12 m6">
-        <div class="card-panel teal">
-            <div class="white-text">{{ review.description }}
-            </div>
-            <div class="divider-card"></div>
-            <div class="white-text right-align">
-                {{ review.username }} - Rating: {{ review.rating }}/5
-            </div>
-        </div>
+    <div class="col s12">
+        <ul class="tabs">
+            <li class="tab col s3"><a href="#test1">Test 1</a></li>
+            <li class="tab col s3"><a href="#test2">Test 2</a></li>
+            <li class="tab col s3"><a href="#test4">Test 4</a></li>
+        </ul>
     </div>
-    {% endif %}
-    {% endfor %}
+    <div id="test1" class="col s12">
+        <ul class="collapsible">
+            {% for user, review in reviews.items() %}
+            <li>
+                <div class="collapsible-header"><i class="material-icons">filter_drama</i>{{ user.name }}</div>
+                <div class="collapsible-body">
+                    <p>{{ review.description }}</p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="test2" class="col s12">Test 2</div>
+    <div id="test4" class="col s12">Test 4</div>
 </div>
 {% endif %}
 {% endblock %}
