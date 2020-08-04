@@ -1,12 +1,12 @@
 {% extends 'base.html'%} {% block content %}
 <div class="container">
-    <div class="row center-align">
-        <h6>Welcome {{ session['username'] }}! These are your reviews!</h6>
+    <div class="row white-text card-panel teal lighten-2 margin-bottom center-align border-radius">
+        <h5>Welcome {{ session['username'] }}! These are your reviews!</h6>
     </div>
 </div>
 {% for review in ureviews %}
 <div class="col s12 m6">
-    <div class="card-panel teal">
+    <div class="card-panel border-radius teal lighten-2 ">
         <div class="row">
             <div class="white-text center-align heading-your-reviews">{{ review.game_name }}</div>
         </div>

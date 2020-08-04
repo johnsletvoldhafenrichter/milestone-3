@@ -6,6 +6,10 @@ from app.setup import DB_GAME_LIST, DB_REVIEWS, DB_USERS
 
 @app.route('/')
 def index():
+    session['user_sort']=1
+    session['rating_sort']=1
+    session['game_sort']=1
+    session['review_sort']=1
     return redirect(url_for('browse'))
 
 @app.route('/all_games')
@@ -13,13 +17,58 @@ def all_games():
     return render_template('all_games.html',
                             gamelist=DB_GAME_LIST.find())
 
+@app.route('/user_sort')
+def user_sort():
+    if session['user_sort'] == 1:
+        session['user_sort']=-1
+        session['rating_sort']=1
+        session['game_sort']=1
+        session['review_sort']=1
+    else:
+        session['user_sort'] = 1
+    return redirect(url_for('browse'))
+
+@app.route('/rating_sort')
+def rating_sort():
+    if session['rating_sort'] == 1:
+        session['rating_sort']=-1
+        session['user_sort']=1
+        session['game_sort']=1
+        session['review_sort']=1
+    else:
+        session['rating_sort'] = 1
+    return redirect(url_for('browse'))
+
+@app.route('/game_sort')
+def game_sort():
+    if session['game_sort'] == 1:
+        session['game_sort']=-1
+        session['rating_sort']=1
+        session['user_sort']=1
+        session['review_sort']=1
+    else:
+        session['game_sort'] = 1
+    return redirect(url_for('browse'))
+
+@app.route('/review_sort')
+def review_sort():
+    if session['review_sort'] == 1:
+        session['review_sort']=-1
+        session['rating_sort']=1
+        session['game_sort']=1
+        session['user_sort']=1
+    else:
+        session['review_sort'] = 1
+    return redirect(url_for('browse'))
+
 @app.route('/browse', methods=['POST', 'GET'])
 def browse(): 
     if request.method == 'POST':
         game_json = request.form['game_select']
         browse_user=request.form['browse_user']
         browse_rating=request.form['browse_rating']
-        if game_json is not "":
+
+        if game_json != "":
             game_objects = game_json.split(',')
             game_name_slice_front = game_objects[1][10:]
             game_name = game_name_slice_front[:-1]
@@ -31,76 +80,27 @@ def browse():
             session['game_picture']=game_pic
             session['game_wiki_link']=wiki_link
             session['game_json']=game_json
-        if browse_user is not "":
+        if browse_user != "":
             session['browse_user']=request.form['browse_user']
-        if browse_rating is not "":
+        if browse_rating != "":
             session['browse_rating']=int(request.form['browse_rating'])
-        
+
         return render_template('browse.html',
-                                users=DB_USERS.find({'$query': {}, '$orderby': {'name' : 1}}),
-                                review_ratings=DB_REVIEWS.find({ '$query': {}, '$orderby': {'rating': -1}}),
-                                review_users=DB_REVIEWS.find({ '$query': {}, '$orderby': {'username': 1}}),
-                                review_games=DB_REVIEWS.find({ '$query': {}, '$orderby': {'game_name': -1}}),
-                                review_latest=DB_REVIEWS.find({ '$query': {}, '$orderby': {'_id': -1}}),
+                                review_ratings=DB_REVIEWS.find().sort('rating', session['rating_sort']),
+                                review_users=DB_REVIEWS.find().sort('username', session['user_sort']),
+                                review_games=DB_REVIEWS.find().sort('game_name', session['game_sort']),
+                                review_latest=DB_REVIEWS.find().sort('_id', session['review_sort']),
+                                users=DB_USERS.find(),
                                 reviews=DB_REVIEWS.find(),
                                 games=DB_GAME_LIST.find())
     return render_template('browse.html',
-                            users=DB_USERS.find({'$query': {}, '$orderby': {'name' : 1}}),
-                            review_ratings=DB_REVIEWS.find({ '$query': {}, '$orderby': {'rating': -1}}),
-                            review_names=DB_REVIEWS.find({ '$query': {}, '$orderby': {'username': -1}}),
-                            review_games=DB_REVIEWS.find({ '$query': {}, '$orderby': {'game_name': -1}}),
-                            review_latest=DB_REVIEWS.find({ '$query': {}, '$orderby': {'_id': -1}}),
+                            review_ratings=DB_REVIEWS.find().sort('rating', session['rating_sort']),
+                            review_users=DB_REVIEWS.find().sort('username', session['user_sort']),
+                            review_games=DB_REVIEWS.find().sort('game_name', session['game_sort']),
+                            review_latest=DB_REVIEWS.find().sort('_id', session['review_sort']),
+                            users=DB_USERS.find(),
                             reviews=DB_REVIEWS.find(),
                             games=DB_GAME_LIST.find())
-
-@app.route('/user_sort')
-def user_sort():
-    if session['user_sort'] == False:
-        session['user_sort']=True
-        return redirect(url_for('browse'))
-    elif session['user_sort'] == True:
-        session['user_sort']=False
-        return redirect(url_for('browse'))
-    else:
-        session['user_sort']=True
-        return redirect(url_for('browse'))
-
-@app.route('/rating_sort')
-def rating_sort():
-    if session['rating_sort'] == False:
-        session['rating_sort']=True
-        return redirect(url_for('browse'))
-    elif session['rating_sort'] == True:
-        session['rating_sort']=False
-        return redirect(url_for('browse'))
-    else:
-        session['rating_sort']=True
-        return redirect(url_for('browse'))
-
-@app.route('/game_sort')
-def game_sort():
-    if session['game_sort'] == False:
-        session['game_sort']=True
-        return redirect(url_for('browse'))
-    elif session['game_sort'] == True:
-        session['game_sort']=False
-        return redirect(url_for('browse'))
-    else:
-        session['game_sort']=True
-        return redirect(url_for('browse'))
-
-@app.route('/review_latest')
-def review_latest():
-    if session['review_latest'] == False:
-        session['review_latest']=True
-        return redirect(url_for('browse'))
-    elif session['review_latest'] == True:
-        session['review_latest']=False
-        return redirect(url_for('browse'))
-    else:
-        session['review_latest']=True
-        return redirect(url_for('browse'))
-
 
 @app.route('/your_reviews')
 def your_reviews():
@@ -109,3 +109,7 @@ def your_reviews():
                                 ureviews=DB_REVIEWS.find({'username': session['username']}),
                                 game_list=DB_GAME_LIST.find())
     return render_template('no_login.html')
+
+@app.route('/top_games')
+def top_games():
+    return render_template('top_games.html')

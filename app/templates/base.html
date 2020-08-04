@@ -14,8 +14,8 @@
     <!-- navbar -->
     <header>
         <nav>
-            <div class="nav-wrapper">
-                <a href="{{url_for('browse')}}" class="brand-logo">Logo</a>
+            <div class="nav-wrapper teal">
+                <a href="{{url_for('browse')}}" class="brand-logo margin-left">Best Game Reviews!</a>
                 <a href="#" data-target="mobile" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
                 <ul class="right hide-on-med-and-down">
                     {% if session['admin'] %}
@@ -23,18 +23,18 @@
                     {% endif %}
                     <li><a href="{{url_for('browse')}}">Browse Reviews</a></li>
                     <li><a href="{{url_for('your_reviews')}}">Your Reviews</a></li>
-                    <li><a href="#">Top Reviews</a></li>
+                    <li><a href="{{url_for('top_games')}}">Top Games</a></li>
                     <li><a href="{{url_for('all_games')}}">All Games</a></li>
                     <li><a href="{{url_for('login')}}">Login/Sign Up!</a></li>
                 </ul>
             </div>
             <ul class="sidenav right" id="mobile">
-                <a href="{{url_for('browse')}}">
-                    <img src="{{url_for('static', filename='images/me-flower.jpg')}}" alt="image" class="nav-img">
+                <a href="{{url_for('browse')}}" class="no-padding">
+                    <img src="{{url_for('static', filename='images/nintendo_pic.jpg')}}" alt="image" class="nav-img">
                 </a>
                 <li><a href="{{url_for('browse')}}">Browse Reviews</a></li>
                 <li><a href="{{url_for('your_reviews')}}">Your Reviews</a></li>
-                <li><a href="#">Top Reviews</a></li>
+                <li><a href="{{url_for('top_games')}}">Top Games</a></li>
                 <li><a href="{{url_for('all_games')}}">All Games</a></li>
                 <li><a href="{{url_for('login')}}">Login/Sign Up!</a></li>
             </ul>

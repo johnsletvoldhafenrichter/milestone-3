@@ -26,5 +26,5 @@ def add_game():
 
 @app.route('/insert_game', methods=['POST'])
 def insert_game():
-    DB_GAME_LIST.insert({'name': request.form['name'], 'publisher': request.form['name'], 'picture_link': request.form['picture_link'], 'wiki_link': request.form['wiki_link']})
+    DB_GAME_LIST.insert({'name': request.form['name'], 'publisher': request.form['publisher'], 'picture_link': request.form['picture_link'], 'wiki_link': request.form['wiki_link']})
     return redirect(url_for('admin_tab'))
