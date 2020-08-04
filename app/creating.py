@@ -12,7 +12,7 @@ def add_review():
 
 @app.route('/insert_review', methods=['POST'])
 def insert_review():
-    DB_REVIEWS.insert({'game_name': request.form['game_name'], 'username': session['username'], 'description': request.form['review'], 'rating': request.form['rating']})
+    DB_REVIEWS.insert({'game_name': request.form['game_name'], 'username': session['username'], 'description': request.form['review'], 'rating': int(request.form['rating'])})
     if session['admin']:
         return redirect(url_for('admin_tab'))
     return redirect(url_for('your_reviews'))

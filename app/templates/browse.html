@@ -1,67 +1,448 @@
 {% extends 'base.html'%} {% block content %}
-<div class="row">
-    <form action="{{ url_for('browse') }}" method="POST">
-        <div class="col s8">
-            <select required name="game_select" id="game_select" class="icons">
-                {% if name %}
-                <option value="{{ name }}" disabled selected>{{ name }}</option>
-                {% else %}
-                <option value="" disabled selected>Choose your option</option>
-                {% endif %}
-                {% for game in games %}
-                <option value="{{ game }}" data-icon="{{ game.picture_link }}">{{ game.name }}</option>
-                {% endfor %}
-            </select>
-            <label>Choose your game in order to see reviews</label>
-        </div>
-        <div class="col s4 right-align">
-            <button class="btn waves-effect waves-light" type="submit" name="action">Search
-                <i class="material-icons right">search</i>
-            </button>
-        </div>
-    </form>
-</div>
-</div>
-{% if name %}
+{% if session['game_name'] %}
 <div class="row">
     <div class="col s12">
         <div class="card horizontal">
             <div class="card-image">
-                <img src="{{ picture }}">
+                <img src="{{ session['game_picture'] }}">
             </div>
             <div class="card-stacked">
                 <div class="card-content">
-                    <p>{{ name }}</p>
+                    <p>{{ session['game_name'] }}</p>
                 </div>
                 <div class="card-action">
-                    <a href="{{wiki_link}}" target="_blank">wikipedia link</a>
+                    <a href="{{session['game_wiki_link']}}" target="_blank">wikipedia link</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endif %}
+<div class="row">
+    <form action="{{ url_for('browse') }}" method="POST">
+        <div class="row">
+            <div class="input-field col s12 m6">
+                <select name="browse_user" id="browse_user">
+                    {% if session['browse_user'] %}
+                    <option value="{{ session['browse_user'] }}" selected>{{ session['browse_user'] }}</option>
+                    {% else %}
+                    <option value="" selected>Choose User</option>
+                    {% endif %}
+                    {% for user in users %}
+                    <option value="{{user.name}}">{{user.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="input-field col s12 m6">
+                <select name="browse_rating" id="browse_rating">
+                    {% if session['browse_rating'] %}
+                    <option value="{{ session['browse_rating'] }}" selected>{{ session['browse_rating'] }}</option>
+                    {% else %}
+                    <option value="" selected>Choose Rating</option>
+                    {% endif %}
+                    {% set ratings=[1, 2, 3, 4, 5] %}
+                    {% for num in ratings %}
+                    <option value="{{num}}">{{num}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m8">
+                <select name="game_select" id="game_select" class="icons">
+                    {% if session['game_name'] %}
+                    <option value="{{ session['game_json'] }}" selected>{{ session['game_name'] }}</option>
+                    {% else %}
+                    <option value="" selected>Choose your option</option>
+                    {% endif %}
+                    {% for game in games %}
+                    <option value="{{ game }}" data-icon="{{ game.picture_link }}">{{ game.name }}</option>
+                    {% endfor %}
+                </select>
+                <label>Choose your game in order to see reviews</label>
+            </div>
+            <div class="col s6 m2">
+                <button class="btn waves-effect waves-light" type="submit" name="action">Search
+                    <i class="material-icons right">search</i>
+                </button>
+            </div>
+            <div class="col s6 m2 right-align">
+                <a href="{{url_for('clear_sessions')}}" class="btn red waves-effect waves-light">Cancel
+                    <i class="material-icons right">delete</i>
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Sorting Navigation -->
+{% if session['browse_user'] or session['game_name'] or session['browse_rating'] %}
 <div class="row">
     <div class="col s12">
-        <ul class="tabs">
-            <li class="tab col s3"><a href="#test1">Test 1</a></li>
-            <li class="tab col s3"><a href="#test2">Test 2</a></li>
-            <li class="tab col s3"><a href="#test4">Test 4</a></li>
-        </ul>
+        <div class="col s3 left-align">
+            <p>SORT BY:</p>
+        </div>
+        <div class="col s2 ">
+            <a href="{{url_for('user_sort')}}" class="btn red waves-effect waves-light">User
+                <i class="material-icons right">sort</i>
+            </a>
+        </div>
+        <div class="col s2 center-align">
+            <a href="{{url_for('rating_sort')}}" class="btn red waves-effect waves-light">Rating
+                <i class="material-icons right">sort</i>
+            </a>
+        </div>
+        <div class="col s2 right-align">
+            <a href="{{url_for('game_sort')}}" class="btn red waves-effect waves-light">Game
+                <i class="material-icons right">sort</i>
+            </a>
+        </div>
+        <div class="col s3 right-align">
+            <a href="{{url_for('review_latest')}}" class="btn red waves-effect waves-light">Newest/Oldest
+                <i class="material-icons right">sort</i>
+            </a>
+        </div>
     </div>
-    <div id="test1" class="col s12">
-        <ul class="collapsible">
-            {% for user, review in reviews.items() %}
-            <li>
-                <div class="collapsible-header"><i class="material-icons">filter_drama</i>{{ user.name }}</div>
-                <div class="collapsible-body">
-                    <p>{{ review.description }}</p>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div id="test2" class="col s12">Test 2</div>
-    <div id="test4" class="col s12">Test 4</div>
 </div>
+{% endif %}
+
+<!-- if everything in form has been selected in the form(narrowest choice) -->
+{% if session['browse_user'] and session['game_name'] and session['browse_rating'] %}
+    {% if session['review_latest'] == True %}
+        <div class="row">
+            {% for review in review_latest %}
+            {% if review.username == session['browse_user'] and review.game_name == session['game_name'] and review.rating == session['browse_rating'] %}
+            <div class="col s12 m6">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        <p>{{ review.username }}</p>
+                        <p>{{ review.game_name }}</p>
+                        <p>{{ review.rating }}</p>
+                        <p>{{ review.description }}</p>
+                    </span>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="row">
+            {% for review in reviews %}
+            {% if review.username == session['browse_user'] and review.game_name == session['game_name'] and review.rating == session['browse_rating'] %}
+            <div class="col s12 m6">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        <p>{{ review.username }}</p>
+                        <p>{{ review.game_name }}</p>
+                        <p>{{ review.rating }}</p>
+                        <p>{{ review.description }}</p>
+                    </span>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+<!-- if username and the game have been selected in the form -->
+{% elif session['browse_user'] and session['game_name'] %}
+    {% if session['rating_sort'] == True %}
+        <div class="row">
+            {% for review in review_ratings %}
+            {% if session['browse_user'] == review.username and session['game_name'] == review.game_name %}
+            <div class="col s12 m6">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        <p>{{ review.username }}</p>
+                        <p>{{ review.game_name }}</p>
+                        <p>{{ review.rating }}</p>
+                        <p>{{ review.description }}</p>
+                    </span>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% elif session['review_latest'] == True %}
+        <div class="row">
+            {% for review in review_latest %}
+            {% if session['browse_user'] == review.username and session['game_name'] == review.game_name %}
+            <div class="col s12 m6">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        <p>{{ review.username }}</p>
+                        <p>{{ review.game_name }}</p>
+                        <p>{{ review.rating }}</p>
+                        <p>{{ review.description }}</p>
+                    </span>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="row">
+            {% for review in reviews %}
+            {% if session['browse_user'] == review.username and session['game_name'] == review.game_name %}
+            <div class="col s12 m6">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        <p>{{ review.username }}</p>
+                        <p>{{ review.game_name }}</p>
+                        <p>{{ review.rating }}</p>
+                        <p>{{ review.description }}</p>
+                    </span>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+<!-- if username and a rating have been chosen -->
+{% elif session['browse_user'] and session['browse_rating']%}
+    {% if session['game_sort'] == True %}
+        <div class="row">
+            {% for review in review_games %}
+            {% if session['browse_user'] == review.username and session['browse_rating'] == review.rating %}
+
+            <div class="col s12 m6">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        <p>{{ review.username }}</p>
+                        <p>{{ review.game_name }}</p>
+                        <p>{{ review.rating }}</p>
+                        <p>{{ review.description }}</p>
+                    </span>
+                </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% elif session['review_latest'] == True %}
+        <div class="row">
+            {% for review in review_latest %}
+            {% if session['browse_user'] == review.username and session['browse_rating'] == review.rating %}
+
+            <div class="col s12 m6">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        <p>{{ review.username }}</p>
+                        <p>{{ review.game_name }}</p>
+                        <p>{{ review.rating }}</p>
+                        <p>{{ review.description }}</p>
+                    </span>
+                </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="row">
+            {% for review in reviews %}
+            {% if session['browse_user'] == review.username and session['browse_rating'] == review.rating %}
+
+            <div class="col s12 m6">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        <p>{{ review.username }}</p>
+                        <p>{{ review.game_name }}</p>
+                        <p>{{ review.rating }}</p>
+                        <p>{{ review.description }}</p>
+                    </span>
+                </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+<!-- if the game and a rating have been chosen -->
+{% elif session['game_name'] and session['browse_rating']%}
+    {% if session['user_sort'] == True %}
+        <div class="row">
+            {% for review in review_users %}
+            {% if session['game_name'] == review.game_name and session['browse_rating'] == review.rating %}
+
+            <div class="col s12 m6">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        <p>{{ review.username }}</p>
+                        <p>{{ review.game_name }}</p>
+                        <p>{{ review.rating }}</p>
+                        <p>{{ review.description }}</p>
+                    </span>
+                </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% elif session['review_latest'] == True %}
+        <div class="row">
+            {% for review in review_latest %}
+            {% if session['game_name'] == review.game_name and session['browse_rating'] == review.rating %}
+
+            <div class="col s12 m6">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        <p>{{ review.username }}</p>
+                        <p>{{ review.game_name }}</p>
+                        <p>{{ review.rating }}</p>
+                        <p>{{ review.description }}</p>
+                    </span>
+                </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="row">
+            {% for review in reviews %}
+            {% if session['game_name'] == review.game_name and session['browse_rating'] == review.rating %}
+
+            <div class="col s12 m6">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        <p>{{ review.username }}</p>
+                        <p>{{ review.game_name }}</p>
+                        <p>{{ review.rating }}</p>
+                        <p>{{ review.description }}</p>
+                    </span>
+                </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+<!-- if only a username has been chosen -->
+{% elif session['browse_user'] %}
+    {% if session['rating_sort'] == True %}
+        <div class="row">
+            {% for review in review_ratings %}
+            {% if session['browse_user'] == review.username %}
+
+            <div class="col s12 m6">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        <p>{{ review.username }}</p>
+                        <p>{{ review.game_name }}</p>
+                        <p>{{ review.rating }}</p>
+                        <p>{{ review.description }}</p>
+                    </span>
+                </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% elif session['game_sort'] == True %}
+        <div class="row">
+            {% for review in review_games %}
+            {% if session['browse_user'] == review.username %}
+
+            <div class="col s12 m6">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        <p>{{ review.username }}</p>
+                        <p>{{ review.game_name }}</p>
+                        <p>{{ review.rating }}</p>
+                        <p>{{ review.description }}</p>
+                    </span>
+                </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% elif session['review_latest'] == True %}
+        <div class="row">
+            {% for review in review_latest %}
+            {% if session['browse_user'] == review.username %}
+
+            <div class="col s12 m6">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        <p>{{ review.username }}</p>
+                        <p>{{ review.game_name }}</p>
+                        <p>{{ review.rating }}</p>
+                        <p>{{ review.description }}</p>
+                    </span>
+                </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="row">
+            {% for review in reviews %}
+            {% if session['browse_user'] == review.username %}
+
+            <div class="col s12 m6">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        <p>{{ review.username }}</p>
+                        <p>{{ review.game_name }}</p>
+                        <p>{{ review.rating }}</p>
+                        <p>{{ review.description }}</p>
+                    </span>
+                </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+<!-- if only a game has been chosen -->
+{% elif session['game_name'] %}
+
+<div class="row">
+    {% for review in review_latest %}
+    {% if session['game_name'] == review.game_name %}
+
+    <div class="col s12 m6">
+        <div class="card-panel teal">
+            <span class="white-text">
+                <p>{{ review.username }}</p>
+                <p>{{ review.game_name }}</p>
+                <p>{{ review.rating }}</p>
+                <p>{{ review.description }}</p>
+            </span>
+        </div>
+    </div>
+
+    {% endif %}
+    {% endfor %}
+</div>
+
+{% elif session['browse_rating'] %}
+
+<div class="row">
+    {% for review in review_latest %}
+    {% if session['browse_rating'] == review.rating %}
+
+    <div class="col s12 m6">
+        <div class="card-panel teal">
+            <span class="white-text">
+                <p>{{ review.username }}</p>
+                <p>{{ review.game_name }}</p>
+                <p>{{ review.rating }}</p>
+                <p>{{ review.description }}</p>
+            </span>
+        </div>
+    </div>
+
+    {% endif %}
+    {% endfor %}
+</div>
+
 {% endif %}
 {% endblock %}

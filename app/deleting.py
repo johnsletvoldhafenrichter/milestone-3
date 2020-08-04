@@ -28,3 +28,10 @@ def delete_review(review_id):
             return redirect(url_for('admin_tab'))
         return redirect(url_for('your_reviews'))
     return render_template('no_login.html')
+
+@app.route('/clear_sessions')
+def clear_sessions():
+    session['browse_user']=""
+    session['browse_rating']=""
+    session['game_name']=""
+    return redirect(url_for('browse'))

@@ -22,5 +22,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let dropdownTriggerEl = document.querySelectorAll('.dropdown-trigger');
     M.Dropdown.init(dropdownTriggerEl);
 
-    let browseTabsEl = M.Tabs.init(browseTabsEl);
+    let browseTabsEl = document.querySelectorAll('.tabs');
+    M.Tabs.init(browseTabsEl);
 });
