@@ -26,7 +26,7 @@ def user_sort():
         session['review_sort']=1
     else:
         session['user_sort'] = 1
-    return redirect(url_for('browse'))
+    return redirect(url_for('browse') + '#sorting')
 
 @app.route('/rating_sort')
 def rating_sort():
@@ -37,7 +37,7 @@ def rating_sort():
         session['review_sort']=1
     else:
         session['rating_sort'] = 1
-    return redirect(url_for('browse'))
+    return redirect(url_for('browse') + '#sorting')
 
 @app.route('/game_sort')
 def game_sort():
@@ -48,7 +48,7 @@ def game_sort():
         session['review_sort']=1
     else:
         session['game_sort'] = 1
-    return redirect(url_for('browse'))
+    return redirect(url_for('browse') + '#sorting')
 
 @app.route('/review_sort')
 def review_sort():
@@ -59,7 +59,7 @@ def review_sort():
         session['user_sort']=1
     else:
         session['review_sort'] = 1
-    return redirect(url_for('browse'))
+    return redirect(url_for('browse') + '#sorting')
 
 @app.route('/browse', methods=['POST', 'GET'])
 def browse(): 
