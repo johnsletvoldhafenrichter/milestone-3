@@ -523,6 +523,35 @@
             {% endfor %}
         </div>
     {% endif %}
-
 {% endif %}
+<div class="row">
+    <div class="col s6">
+        <ul class="pagination">
+            {% if PAGE_NUMBER == 0 %}
+            <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></a></li>
+            {% else %}
+            <li class="waves-effect"><a href="{{ url_for('page_count', num=(PAGE_NUMBER-1)) }}"><i class="material-icons">chevron_left</i></a></li>
+            {% endif %}
+            {% for page in range(pages) %}
+            <li class="waves-effect"><a href="{{ url_for('page_count', num=page) }}">{{page+1}}</a></li>
+            {%endfor%}
+            {% if PAGE_NUMBER +1 >= pages %}
+            <li class="waves-effect disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+            {% else %}
+            <li class="waves-effect"><a href="{{ url_for('page_count', num=PAGE_NUMBER+1) }}"><i class="material-icons">chevron_right</i></a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="col s6 right-align">
+        <ul class="pagination">
+            <li>Show Items</br>Per Page:</li>
+            <li class="waves-effect"><a href="{{url_for('change_limit', num=5)}}">5</a></li>
+            <li class="waves-effect"><a href="{{url_for('change_limit', num=10)}}">10</a></li>
+            <li class="waves-effect"><a href="{{url_for('change_limit', num=25)}}">25</a></li>
+            <li class="waves-effect"><a href="{{url_for('change_limit', num=50)}}">50</a></li>
+            <li class="waves-effect"><a href="{{url_for('change_limit', num=100)}}">100</a></li>
+        </ul>
+    </div>
+</div>
+
 {% endblock %}

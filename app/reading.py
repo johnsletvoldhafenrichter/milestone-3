@@ -1,8 +1,9 @@
 from flask import render_template, session, request, redirect, url_for
 from flask_pymongo import PyMongo, pymongo, DESCENDING
+import math
 
 from app import app
-from app.setup import DB_GAME_LIST, DB_REVIEWS, DB_USERS
+from app.setup import DB_GAME_LIST, DB_REVIEWS, DB_USERS, DB_COUNTER
 
 @app.route('/')
 def index():
@@ -10,7 +11,38 @@ def index():
     session['rating_sort']=1
     session['game_sort']=1
     session['review_sort']=1
-    return redirect(url_for('browse'))
+    session['TOTAL_PAGES'] = 0
+    session['LIMIT'] = int(5)
+    session['SKIP'] = 0
+    session['PAGE_NUMBER'] = 0
+    latest_reviews = DB_REVIEWS.find().sort('reviews_id', -1).limit(6)
+    num_count=DB_COUNTER.find_one({'counter_name': 'counter'})
+    games=num_count['number_games']
+    reviews=num_count['number_reviews']
+    users=num_count['number_users']
+    return render_template('index.html',
+                            lates_reviews=latest_reviews,
+                            games=games,
+                            reviews=reviews,
+                            users=users)
+
+# Pagination
+
+@app.route('/page_count/<num>')
+def page_count(num):
+    session['PAGE_NUMBER'] = int(num)
+    if session['PAGE_NUMBER'] < 0:
+        session['PAGE_NUMBER'] = 0
+    elif session['PAGE_NUMBER'] >= session['TOTAL_PAGES']:
+        session['PAGE_NUMBER'] = session['TOTAL_PAGES']
+    session['SKIP'] = int(session['PAGE_NUMBER']*session['LIMIT'])
+    return redirect(url_for('browse') + '#sorting')
+
+@app.route('/change_limit/<num>')
+def change_limit(num):
+    session['LIMIT'] = int(num)
+    return redirect(url_for('browse') + '#sorting')
+
 
 @app.route('/all_games')
 def all_games():
@@ -62,7 +94,13 @@ def review_sort():
     return redirect(url_for('browse') + '#sorting')
 
 @app.route('/browse', methods=['POST', 'GET'])
-def browse(): 
+def browse():
+    skip_limit = DB_REVIEWS.find().skip(session['SKIP']).limit(session['LIMIT'])
+    review_ratings=skip_limit.sort('rating', session['rating_sort'])
+    review_users=skip_limit.sort('username', session['user_sort'])
+    review_games=skip_limit.sort('game_name', session['game_sort'])
+    review_latest=skip_limit.sort('review_id', session['review_sort'])
+
     if request.method == 'POST':
         game_json = request.form['game_select']
         browse_user=request.form['browse_user']
@@ -84,23 +122,27 @@ def browse():
             session['browse_user']=request.form['browse_user']
         if browse_rating != "":
             session['browse_rating']=int(request.form['browse_rating'])
-
         return render_template('browse.html',
-                                review_ratings=DB_REVIEWS.find().sort('rating', session['rating_sort']),
-                                review_users=DB_REVIEWS.find().sort('username', session['user_sort']),
-                                review_games=DB_REVIEWS.find().sort('game_name', session['game_sort']),
-                                review_latest=DB_REVIEWS.find().sort('_id', session['review_sort']),
+                                review_ratings=review_ratings,
+                                review_users=review_users,
+                                review_games=review_games,
+                                review_latest=review_latest,
                                 users=DB_USERS.find(),
-                                reviews=DB_REVIEWS.find(),
-                                games=DB_GAME_LIST.find())
+                                reviews=DB_REVIEWS.find().sort('reviews_id', -1).skip(session['SKIP']).limit(session['LIMIT']),
+                                games=DB_GAME_LIST.find().sort('game_id', -1),
+                                pages=session['TOTAL_PAGES'],
+                                PAGE_NUMBER=session['PAGE_NUMBER'])
+
     return render_template('browse.html',
-                            review_ratings=DB_REVIEWS.find().sort('rating', session['rating_sort']),
-                            review_users=DB_REVIEWS.find().sort('username', session['user_sort']),
-                            review_games=DB_REVIEWS.find().sort('game_name', session['game_sort']),
-                            review_latest=DB_REVIEWS.find().sort('_id', session['review_sort']),
+                            review_ratings=review_ratings,
+                            review_users=review_users,
+                            review_games=review_games,
+                            review_latest=review_latest,
                             users=DB_USERS.find(),
-                            reviews=DB_REVIEWS.find(),
-                            games=DB_GAME_LIST.find())
+                            reviews=DB_REVIEWS.find().sort('reviews_id', -1).skip(session['SKIP']).limit(session['LIMIT']),
+                            games=DB_GAME_LIST.find().sort('game_id', -1),
+                            pages=session['TOTAL_PAGES'],
+                            PAGE_NUMBER=session['PAGE_NUMBER'])
 
 @app.route('/your_reviews')
 def your_reviews():
@@ -112,4 +154,17 @@ def your_reviews():
 
 @app.route('/top_games')
 def top_games():
+    total_ratings = DB_REVIEWS.aggregate([{'$group': {'_id': '$game_name', 'count': {'$sum': '$rating'}}}])
+    total_reviews = DB_REVIEWS.aggregate([{'$group': {'_id': '$game_name', 'count': {'$sum': 1}}}])
+    grp_average = DB_GAME_LIST.aggregate([{'$group': {'_id': '$name', 'avgAmount': {'$avg': { '$divide': ['$total_rating', '$total_reviews']}}}}])
+    for rating in total_ratings:
+        DB_GAME_LIST.update({'name': rating['_id']}, {'$set':{'total_rating': rating['count']}})
+    for review in total_reviews:
+        DB_GAME_LIST.update({'name': review['_id']}, {'$set':{'total_reviews': review['count']}})
+    for grp in grp_average:
+        if grp['avgAmount'] == None:
+            continue
+        average = round(grp['avgAmount'], 2)
+        DB_GAME_LIST.update({'name': grp['_id']}, {'$set':{'average': average}})
+        
     return render_template('top_games.html')

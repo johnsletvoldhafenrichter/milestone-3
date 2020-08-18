@@ -1,0 +1,23 @@
+{% extends 'base.html'%} {% block content %}
+    <div class="row">
+        <h4>Welcome to the best gaming review site!</h4>
+        <p>Currently there are {{ users }} users, {{ games }} games and {{ reviews }} reviews on this website!</p>
+        <p>Feel free to explore all reviews under browse reviews or sign up in order to post and edit your own reviews!</p>
+        <p>These are the last 6 reviews posted!</p>
+    </div>
+
+    <div class="row">
+        {% for review in lates_reviews %}
+            <div class="col s12 m6">
+                <div class="card-panel teal">
+                    <span class="white-text">
+                        <p>{{ review.username }}</p>
+                        <p>{{ review.game_name }}</p>
+                        <p>{{ review.rating }}</p>
+                        <p>{{ review.description }}</p>
+                    </span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -2,7 +2,7 @@ import bcrypt
 from flask import render_template, redirect, request, url_for, request, session
 
 from app import app
-from app.setup import DB_USERS, DB_GAME_LIST, DB_REVIEWS, admin_password, admin_user
+from app.setup import DB_USERS, DB_GAME_LIST, DB_REVIEWS, DB_COUNTER, admin_password, admin_user
 
 # Sign up and Login pages and authentication
 @app.route('/sign_up', methods=['POST', 'GET'])
@@ -15,6 +15,7 @@ def sign_up():
             hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
             DB_USERS.insert({'name': request.form['username'], 'password': hashpass, 'email': request.form['email']})
             session['username'] = request.form['username']
+            DB_COUNTER.update({'counter_name': 'counter'}, { '$inc': {'number_users': 1}})
             return redirect(url_for('browse'))
         return render_template('fail_sign_up.html')
     return render_template('sign_up.html')
@@ -32,9 +33,15 @@ def login():
                     return redirect(url_for('admin_tab'))
                 else:
                     session['admin'] = False
-                return redirect(url_for('your_reviews'))
+                return redirect(url_for('index'))
         return render_template('fail_login.html')
     return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
 
 # root access and home page
 @app.route('/admin_tab')
@@ -42,6 +49,6 @@ def admin_tab():
     if session['admin']:
         return render_template('admin_tab.html',
                                 gamelist=DB_GAME_LIST.find(),
-                                reviews=DB_REVIEWS.find(),
+                                reviews=DB_REVIEWS.find().sort('review_id', -1),
                                 users=DB_USERS.find())
     return render_template('no_login.html')
