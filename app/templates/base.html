@@ -19,13 +19,13 @@
                 <a href="#" data-target="mobile" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
                 <ul class="right hide-on-med-and-down">
                     {% if session['admin'] %}
-                    <li><a href="{{url_for('admin_tab')}}">Admin Tab</a></li>
+                    <li {% if request.path == '/admin_tab' %}class="active"{% endif %}><a href="{{url_for('admin_tab')}}">Admin Tab</a></li>
                     {% endif %}
-                    <li><a href="{{url_for('clear_sessions', where='browse')}}">Browse Reviews</a></li>
-                    <li><a href="{{url_for('top_games')}}">Top Games</a></li>
-                    <li><a href="{{url_for('all_games')}}">All Games</a></li>
+                    <li {% if request.path == '/browse' %} class="active" {% endif %}><a href="{{url_for('clear_sessions', where='browse')}}">Browse Reviews</a></li>
+                    <li {% if request.path == '/top_games' %}class="active"{% endif %}><a href="{{url_for('top_games')}}">Top Games</a></li>
+                    <li {% if request.path == '/all_games' %}class="active"{% endif %}><a href="{{url_for('all_games')}}">All Games</a></li>
                     {% if session['username'] %}
-                    <li><a href="{{url_for('clear_sessions', where='your_reviews')}}">Your Reviews</a></li>
+                    <li {% if request.path == '/your_reviews' %}class="active"{% endif %}><a href="{{url_for('clear_sessions', where='your_reviews')}}">Your Reviews</a></li>
                     <li><!-- Modal Trigger -->
                         <a class="waves-effect waves-light btn modal-trigger red" href="#logout">Logout!</a>
 
@@ -45,7 +45,7 @@
                         </div>
                     </li>
                     {% else %}
-                    <li><a href="{{url_for('login')}}">Login/Sign Up!</a></li>
+                    <li {% if request.path == '/login' %}class="active"{% endif %}><a href="{{url_for('login')}}">Login/Sign Up!</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -54,13 +54,13 @@
                     <img src="{{url_for('static', filename='images/nintendo_pic.jpg')}}" alt="image" class="nav-img">
                 </a>
                 {% if session['admin'] %}
-                <li><a href="{{url_for('admin_tab')}}">Admin Tab</a></li>
+                <li {% if request.path == '/admin_tab' %}class="active"{% endif %}><a href="{{url_for('admin_tab')}}">Admin Tab</a></li>
                 {% endif %}
-                <li><a href="{{url_for('clear_sessions', where='browse')}}">Browse Reviews</a></li>
-                <li><a href="{{url_for('top_games')}}">Top Games</a></li>
-                <li><a href="{{url_for('all_games')}}">All Games</a></li>
+                <li {% if request.path == '/browse' %}class="active"{% endif %}><a href="{{url_for('clear_sessions', where='browse')}}">Browse Reviews</a></li>
+                <li {% if request.path == '/top_games' %}class="active"{% endif %}><a href="{{url_for('top_games')}}">Top Games</a></li>
+                <li {% if request.path == '/all_games' %}class="active"{% endif %}><a href="{{url_for('all_games')}}">All Games</a></li>
                 {% if session['username'] %}
-                <li><a href="{{url_for('clear_sessions', where='your_reviews')}}">Your Reviews</a></li>
+                <li {% if request.path == '/your_reviews' %}class="active"{% endif %}><a href="{{url_for('clear_sessions', where='your_reviews')}}">Your Reviews</a></li>
                 <li><a class="waves-effect waves-light btn red" href="{{url_for('logout')}}">Logout!</a>                </li>
                 {% else %}
                 <li><a href="{{url_for('login')}}">Login/Sign Up!</a></li>

@@ -18,33 +18,38 @@
     </div>
   </div>
 {% endfor %}
-<div class="row">
-  <div class="col s6">
-      <ul class="pagination">
-          {% if PAGE_NUMBER == 1 %}
-          <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></a></li>
-          {% else %}
-          <li class="waves-effect"><a href="{{ url_for('page_count', num=(PAGE_NUMBER-1), where='all_games') }}"><i class="material-icons">chevron_left</i></a></li>
-          {% endif %}
-          {% for page in range(pages) %}
-          <li class="waves-effect"><a href="{{ url_for('page_count', num=(page+1), where='all_games') }}">{{page+1}}</a></li>
-          {%endfor%}
-          {% if PAGE_NUMBER == pages %}
-          <li class="waves-effect disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-          {% else %}
-          <li class="waves-effect"><a href="{{ url_for('page_count', num=PAGE_NUMBER+1, where='all_games' )}}"><i class="material-icons">chevron_right</i></a></li>
-          {% endif %}
-      </ul>
-  </div>
-  <div class="col s6 right-align">
-      <ul class="pagination">
-          <li>Show Items</br>Per Page:</li>
-          <li class="waves-effect"><a href="{{url_for('change_limit', num=6, where='all_games')}}">6</a></li>
-          <li class="waves-effect"><a href="{{url_for('change_limit', num=12, where='all_games')}}">12</a></li>
-          <li class="waves-effect"><a href="{{url_for('change_limit', num=24, where='all_games')}}">24</a></li>
-          <li class="waves-effect"><a href="{{url_for('change_limit', num=48, where='all_games')}}">48</a></li>
-          <li class="waves-effect"><a href="{{url_for('change_limit', num=96, where='all_games')}}">96</a></li>
-      </ul>
-  </div>
+<!-- Pagination -->
+<div class="col s12">
+    <div class="col s12 m6 center-align">
+        <ul class="pagination">                
+            <p class="center-align">Page Number:</p>
+            {% if PAGE_NUMBER == 1 %}
+            <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></a></li>
+            {% else %}
+            <li class="waves-effect"><a href="{{ url_for('page_count', num=(PAGE_NUMBER-1), where='all_games') }}"><i class="material-icons">chevron_left</i></a></li>
+            {% endif %}
+            {% for page in range(pages) %}
+            <li class="waves-effect {% if (session['PAGE_NUMBER']-1) == page %}active{% endif %}"><a href="{{ url_for('page_count', num=(page+1), where='all_games') }}">{{page+1}}</a></li>
+            {%endfor%}
+            {% if PAGE_NUMBER == pages %}
+            <li class="waves-effect disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+            {% else %}
+            <li class="waves-effect"><a href="{{ url_for('page_count', num=PAGE_NUMBER+1, where='all_games' )}}"><i class="material-icons">chevron_right</i></a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="col s12 m6 center-align">
+        <ul class="pagination">
+            <p class="center-align">Items per Page:</p>
+            {% set limit=[6, 12, 24, 48, 96] %}
+            {% for i in limit %}
+            <li class="waves-effect {% if session['LIMIT'] == i %}active{% endif %}"><a href="{{url_for('change_limit', num=i, where='all_games')}}">{{i}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<div class="fixed-action-btn action-button">
+    <a href="{{ url_for('add_review') }}" class="btn-floating btn-large waves-effect waves-light red tooltipped"
+        data-position="left" data-tooltip="Add a review!"><i class="material-icons">add</i></a>
 </div>
 {% endblock %}

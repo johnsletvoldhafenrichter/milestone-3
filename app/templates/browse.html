@@ -78,29 +78,33 @@
 <!-- Sorting Navigation -->
 {% if session['browse_user'] or session['game_name'] or session['browse_rating'] %}
 <div class="row">
-    <div class="col s12">
-        <div class="col s3 left-align">
+    <div id="sorting" class="row">
+        <div class="col s12 center-align">
             <p>SORT BY:</p>
         </div>
-        <div class="col s2 ">
-            <a href="{{url_for('sorting', el='user')}}" class="btn waves-effect waves-light">User
-                <i class="material-icons right">sort</i>
-            </a>
-        </div>
-        <div class="col s2 center-align">
-            <a href="{{url_for('sorting', el='rating')}}" class="btn waves-effect waves-light">Rating
-                <i class="material-icons right">sort</i>
-            </a>
-        </div>
-        <div class="col s2 right-align">
-            <a href="{{url_for('sorting', el='game')}}" class="btn waves-effect waves-light">Game
-                <i class="material-icons right">sort</i>
-            </a>
-        </div>
-        <div class="col s3 right-align">
-            <a id="sorting"  href="{{url_for('sorting', el='latest')}}" class="btn waves-effect waves-light">Newest/Oldest
-                <i class="material-icons right">sort</i>
-            </a>
+        <div class="row col s12 m6">
+            <div class="col s6">
+                <a href="{{url_for('sorting', el='user')}}" class="btn waves-effect waves-light">User
+                    <i class="material-icons right">sort</i>
+                </a>
+            </div>
+            <div class="col s6">
+                <a href="{{url_for('sorting', el='rating')}}" class="btn waves-effect waves-light">Rating
+                    <i class="material-icons right">sort</i>
+                </a>
+            </div>
+        </div>        
+        <div class="row col s12 m6">
+            <div class="col s6">
+                <a href="{{url_for('sorting', el='game')}}" class="btn waves-effect waves-light">Game
+                    <i class="material-icons right">sort</i>
+                </a>
+            </div>
+            <div class="col s6">
+                <a href="{{url_for('sorting', el='latest')}}" class="btn waves-effect waves-light">Newest/Oldest
+                    <i class="material-icons right">sort</i>
+                </a>
+            </div>
         </div>
     </div>
 </div>
@@ -186,16 +190,17 @@
         </div>
     {% endif %}
     <!-- Pagination -->
-    <div class="row">
-        <div class="col s6">
-            <ul class="pagination">
+    <div class="col s12">
+        <div class="col s12 m6 center-align">
+            <ul class="pagination">                
+                <p class="center-align">Page Number:</p>
                 {% if PAGE_NUMBER == 1 %}
                 <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></a></li>
                 {% else %}
                 <li class="waves-effect"><a href="{{ url_for('page_count', num=(PAGE_NUMBER-1), where='browse') }}"><i class="material-icons">chevron_left</i></a></li>
                 {% endif %}
                 {% for page in range(pages) %}
-                <li class="waves-effect"><a href="{{ url_for('page_count', num=(page+1), where='browse') }}">{{page+1}}</a></li>
+                <li class="waves-effect {% if (session['PAGE_NUMBER']-1) == page %}active{% endif %}"><a href="{{ url_for('page_count', num=(page+1), where='browse') }}">{{page+1}}</a></li>
                 {%endfor%}
                 {% if PAGE_NUMBER == pages %}
                 <li class="waves-effect disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
@@ -204,14 +209,13 @@
                 {% endif %}
             </ul>
         </div>
-        <div class="col s6 right-align">
+        <div class="col s12 m6 center-align">
             <ul class="pagination">
-                <li>Show Items</br>Per Page:</li>
-                <li class="waves-effect"><a href="{{url_for('change_limit', num=6, where='browse')}}">6</a></li>
-                <li class="waves-effect"><a href="{{url_for('change_limit', num=12, where='browse')}}">12</a></li>
-                <li class="waves-effect"><a href="{{url_for('change_limit', num=24, where='browse')}}">24</a></li>
-                <li class="waves-effect"><a href="{{url_for('change_limit', num=48, where='browse')}}">48</a></li>
-                <li class="waves-effect"><a href="{{url_for('change_limit', num=96, where='browse')}}">96</a></li>
+                <p class="center-align">Items per Page:</p>
+                {% set limit=[6, 12, 24, 48, 96] %}
+                {% for i in limit %}
+                <li class="waves-effect {% if session['LIMIT'] == i %}active{% endif %}"><a href="{{url_for('change_limit', num=i, where='browse')}}">{{i}}</a></li>
+                {% endfor %}
             </ul>
         </div>
     </div>
