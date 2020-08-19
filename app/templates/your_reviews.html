@@ -2,8 +2,80 @@
 <div class="container">
     <div class="row white-text card-panel teal lighten-2 margin-bottom center-align border-radius">
         <h5>Welcome {{ session['username'] }}! These are your reviews!</h6>
+        <h5>You have created: {{ results }} reviews!</h5>
     </div>
 </div>
+{% if session['game_name'] %}
+<div class="row">
+    <div class="col s12">
+        <div class="card horizontal">
+            <div class="card-image">
+                <img src="{{ session['game_picture'] }}">
+            </div>
+            <div class="card-stacked">
+                <div class="card-content">
+                    <p>{{ session['game_name'] }}</p>
+                </div>
+                <div class="card-action">
+                    <a href="{{session['game_wiki_link']}}" target="_blank">wikipedia link</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="row">
+    <form action="{{ url_for('your_reviews') }}" method="POST">
+            <div class="input-field col s12 m6">
+                <select name="browse_rating" id="browse_rating">
+                    {% if session['browse_rating'] %}
+                    <option value="{{ session['browse_rating'] }}" selected>{{ session['browse_rating'] }}</option>
+                    {% else %}
+                    <option value="" selected>Choose Rating</option>
+                    {% endif %}
+                    {% set ratings=[1, 2, 3, 4, 5] %}
+                    {% for num in ratings %}
+                    <option value="{{num}}">{{num}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="input-field col s12 m6">
+                <select name="game_select" id="game_select" class="icons">
+                    {% if session['game_name'] %}
+                    <option value="{{ session['game_json'] }}" selected>{{ session['game_name'] }}</option>
+                    {% else %}
+                    <option value="" selected>Choose your game</option>
+                    {% endif %}
+                    {% for game in games %}
+                    <option value="{{ game }}" data-icon="{{ game.picture_link }}">{{ game.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <button class="btn waves-effect waves-light" id="search" type="submit" name="action">Search
+                    <i class="material-icons right">search</i>
+                </button>
+            </div>
+            <div class="col s6 right-align">
+                <a href="{{url_for('clear_sessions', where='your_reviews')}}" class="btn red waves-effect waves-light">Clear
+                    <i class="material-icons right">delete</i>
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="row">
+
+{% if result %}
+<div class="row">
+    <div class="col s12">
+        <h4>There are {{ result }} results in your search!</h4>
+    </div>
+</div>
+{% endif %}
+
 {% for review in ureviews %}
 <div class="col s12 m6">
     <div class="card-panel border-radius teal lighten-2 ">
@@ -41,6 +113,37 @@
     </div>
 </div>
 {% endfor %}
+</div>
+<!-- Pagination -->
+<div class="col s12">
+    <div class="col s6">
+        <ul class="pagination">
+            {% if PAGE_NUMBER == 1 %}
+            <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></a></li>
+            {% else %}
+            <li class="waves-effect"><a href="{{ url_for('page_count', num=(PAGE_NUMBER-1), where='your_reviews') }}"><i class="material-icons">chevron_left</i></a></li>
+            {% endif %}
+            {% for page in range(pages) %}
+            <li class="waves-effect"><a href="{{ url_for('page_count', num=(page+1), where='your_reviews') }}">{{page+1}}</a></li>
+            {%endfor%}
+            {% if PAGE_NUMBER == pages %}
+            <li class="waves-effect disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+            {% else %}
+            <li class="waves-effect"><a href="{{ url_for('page_count', num=PAGE_NUMBER+1, where='your_reviews' )}}"><i class="material-icons">chevron_right</i></a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="col s6 right-align">
+        <ul class="pagination">
+            <li>Show Items</br>Per Page:</li>
+            <li class="waves-effect"><a href="{{url_for('change_limit', num=6, where='your_reviews')}}">6</a></li>
+            <li class="waves-effect"><a href="{{url_for('change_limit', num=12, where='your_reviews')}}">12</a></li>
+            <li class="waves-effect"><a href="{{url_for('change_limit', num=24, where='your_reviews')}}">24</a></li>
+            <li class="waves-effect"><a href="{{url_for('change_limit', num=48, where='your_reviews')}}">48</a></li>
+            <li class="waves-effect"><a href="{{url_for('change_limit', num=96, where='your_reviews')}}">96</a></li>
+        </ul>
+    </div>
+</div>
 <div class="fixed-action-btn action-button">
     <a href="{{ url_for('add_review') }}" class="btn-floating btn-large waves-effect waves-light red tooltipped"
         data-position="left" data-tooltip="Add a review!"><i class="material-icons">add</i></a>

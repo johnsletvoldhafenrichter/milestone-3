@@ -1,3 +1,74 @@
 {% extends 'base.html' %} {% block content %}
+<div class="row">
+    <div class="col s12">
+        <h4>these are our top 6 rated games!</h4>
+    </div>
+</div>
 
+<div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s3"><a class="active" href="#test1">Best Average</a></li>
+        <li class="tab col s3"><a href="#test2">Most Reviews</a></li>
+        <li class="tab col s3"><a href="#test3">Best Rating</a></li>
+      </ul>
+    </div>
+    <div id="test1" class="col s12">
+        <h4>Sorted by best avg</h4>
+        {% for game in best_avg %}
+            <div class="col s12 m6">
+                <div class="card top-card">
+                    <div class="card-image top-image">
+                    <img src="{{ game.picture_link }}">
+                    <span class="card-title">{{ game.name }}</span>
+                    </div>
+                    <div class="card-content">
+                    <p> {{ game.publisher }}</p>
+                    </div>
+                    <div class="card-action">
+                    <a href="{{ game.wiki_link }}" target="_blank">Learn more!</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div id="test2" class="col s12">
+        <h4>Sorted by most reviews</h4>
+        {% for game in most_reviews %}
+            <div class="col s12 m6">
+                <div class="card top-card">
+                    <div class="card-image top-image">
+                    <img src="{{ game.picture_link }}">
+                    <span class="card-title">{{ game.name }}</span>
+                    </div>
+                    <div class="card-content">
+                    <p> {{ game.publisher }}</p>
+                    </div>
+                    <div class="card-action">
+                    <a href="{{ game.wiki_link }}" target="_blank">Learn more!</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div id="test3" class="col s12">
+        <h4>Sorted by most rating</h4>
+        {% for game in most_rating %}
+            <div class="col s12 m6">
+                <div class="card top-card">
+                    <div class="card-image top-image">
+                    <img src="{{ game.picture_link }}">
+                    <span class="card-title">{{ game.name }}</span>
+                    </div>
+                    <div class="card-content">
+                    <p> {{ game.publisher }}</p>
+                    </div>
+                    <div class="card-action">
+                    <a href="{{ game.wiki_link }}" target="_blank">Learn more!</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

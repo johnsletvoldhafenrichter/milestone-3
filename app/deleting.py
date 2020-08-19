@@ -36,9 +36,13 @@ def delete_review(review_id):
         return redirect(url_for('your_reviews'))
     return render_template('no_login.html')
 
-@app.route('/clear_sessions')
-def clear_sessions():
-    session['browse_user']=""
-    session['browse_rating']=""
-    session['game_name']=""
-    return redirect(url_for('browse'))
+@app.route('/clear_sessions/<where>')
+def clear_sessions(where):
+    session['browse_user']=False
+    session['browse_rating']=False
+    session['game_name']=False
+    session['SKIP'] = 0
+    session['PAGE_NUMBER'] = 1
+    session['LIMIT'] = int(6)
+
+    return redirect(url_for(where))

@@ -21,11 +21,11 @@
                     {% if session['admin'] %}
                     <li><a href="{{url_for('admin_tab')}}">Admin Tab</a></li>
                     {% endif %}
-                    <li><a href="{{url_for('browse')}}">Browse Reviews</a></li>
+                    <li><a href="{{url_for('clear_sessions', where='browse')}}">Browse Reviews</a></li>
                     <li><a href="{{url_for('top_games')}}">Top Games</a></li>
                     <li><a href="{{url_for('all_games')}}">All Games</a></li>
                     {% if session['username'] %}
-                    <li><a href="{{url_for('your_reviews')}}">Your Reviews</a></li>
+                    <li><a href="{{url_for('clear_sessions', where='your_reviews')}}">Your Reviews</a></li>
                     <li><!-- Modal Trigger -->
                         <a class="waves-effect waves-light btn modal-trigger red" href="#logout">Logout!</a>
 
@@ -56,11 +56,11 @@
                 {% if session['admin'] %}
                 <li><a href="{{url_for('admin_tab')}}">Admin Tab</a></li>
                 {% endif %}
-                <li><a href="{{url_for('browse')}}">Browse Reviews</a></li>
+                <li><a href="{{url_for('clear_sessions', where='browse')}}">Browse Reviews</a></li>
                 <li><a href="{{url_for('top_games')}}">Top Games</a></li>
                 <li><a href="{{url_for('all_games')}}">All Games</a></li>
                 {% if session['username'] %}
-                <li><a href="{{url_for('your_reviews')}}">Your Reviews</a></li>
+                <li><a href="{{url_for('clear_sessions', where='your_reviews')}}">Your Reviews</a></li>
                 <li><a class="waves-effect waves-light btn red" href="{{url_for('logout')}}">Logout!</a>                </li>
                 {% else %}
                 <li><a href="{{url_for('login')}}">Login/Sign Up!</a></li>

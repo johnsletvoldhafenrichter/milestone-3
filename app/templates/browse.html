@@ -67,7 +67,7 @@
                 </button>
             </div>
             <div class="col s6 m2 right-align">
-                <a href="{{url_for('clear_sessions')}}" class="btn red waves-effect waves-light">Cancel
+                <a href="{{url_for('clear_sessions', where='browse')}}" class="btn red waves-effect waves-light">Clear
                     <i class="material-icons right">delete</i>
                 </a>
             </div>
@@ -83,182 +83,35 @@
             <p>SORT BY:</p>
         </div>
         <div class="col s2 ">
-            <a href="{{url_for('user_sort')}}" class="btn waves-effect waves-light">User
+            <a href="{{url_for('sorting', el='user')}}" class="btn waves-effect waves-light">User
                 <i class="material-icons right">sort</i>
             </a>
         </div>
         <div class="col s2 center-align">
-            <a href="{{url_for('rating_sort')}}" class="btn waves-effect waves-light">Rating
+            <a href="{{url_for('sorting', el='rating')}}" class="btn waves-effect waves-light">Rating
                 <i class="material-icons right">sort</i>
             </a>
         </div>
         <div class="col s2 right-align">
-            <a href="{{url_for('game_sort')}}" class="btn waves-effect waves-light">Game
+            <a href="{{url_for('sorting', el='game')}}" class="btn waves-effect waves-light">Game
                 <i class="material-icons right">sort</i>
             </a>
         </div>
         <div class="col s3 right-align">
-            <a id="sorting"  href="{{url_for('review_sort')}}" class="btn waves-effect waves-light">Newest/Oldest
+            <a id="sorting"  href="{{url_for('sorting', el='latest')}}" class="btn waves-effect waves-light">Newest/Oldest
                 <i class="material-icons right">sort</i>
             </a>
         </div>
     </div>
 </div>
 {% endif %}
-
-<!-- if everything in form has been selected in the form(narrowest choice) -->
-{% if session['browse_user'] and session['game_name'] and session['browse_rating'] %}
-    {% if session['review_sort'] == -1 %}
-        <div class="row">
-            {% for review in review_latest %}
-            {% if review.username == session['browse_user'] and review.game_name == session['game_name'] and review.rating == session['browse_rating'] %}
-            <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="row">
-            {% for review in review_latest %}
-            {% if review.username == session['browse_user'] and review.game_name == session['game_name'] and review.rating == session['browse_rating'] %}
-            <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    {% endif %}
-<!-- if username and the game have been selected in the form -->
-{% elif session['browse_user'] and session['game_name'] %}
-    {% if session['rating_sort'] == -1 %}
-        <div class="row">
-            {% for review in review_ratings %}
-            {% if session['browse_user'] == review.username and session['game_name'] == review.game_name %}
-            <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    {% elif session['review_sort'] == -1 %}
-        <div class="row">
-            {% for review in review_latest %}
-            {% if session['browse_user'] == review.username and session['game_name'] == review.game_name %}
-            <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="row">
-            {% for review in reviews %}
-            {% if session['browse_user'] == review.username and session['game_name'] == review.game_name %}
-            <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    {% endif %}
-
-<!-- if username and a rating have been chosen -->
-{% elif session['browse_user'] and session['browse_rating']%}
-    {% if session['game_sort'] == -1 %}
-        <div class="row">
-            {% for review in review_games %}
-            {% if session['browse_user'] == review.username and session['browse_rating'] == review.rating %}
-            <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    {% elif session['review_sort'] == -1 %}
-        <div class="row">
-            {% for review in review_latest %}
-            {% if session['browse_user'] == review.username and session['browse_rating'] == review.rating %}
-            <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="row">
-            {% for review in reviews %}
-            {% if session['browse_user'] == review.username and session['browse_rating'] == review.rating %}
-            <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    {% endif %}
-
-<!-- if the game and a rating have been chosen -->
-{% elif session['game_name'] and session['browse_rating']%}
-    {% if session['user_sort'] == -1 %}
+{% if not not_selected %}
+    <div class="row">
+        <h3>Total Results: {{ results }}</h3>
+    </div>
+    {% if session['user_sort'] == -1 or session['user_sort'] == 1 %}
         <div class="row">
             {% for review in review_users %}
-            {% if session['game_name'] == review.game_name and session['browse_rating'] == review.rating %}
             <div class="col s12 m6">
                 <div class="card-panel teal">
                     <span class="white-text">
@@ -269,51 +122,11 @@
                     </span>
                 </div>
             </div>
-            {% endif %}
             {% endfor %}
         </div>
-    {% elif session['review_sort'] == -1 %}
-        <div class="row">
-            {% for review in review_latest %}
-            {% if session['game_name'] == review.game_name and session['browse_rating'] == review.rating %}
-            <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="row">
-            {% for review in reviews %}
-            {% if session['game_name'] == review.game_name and session['browse_rating'] == review.rating %}
-            <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    {% endif %}
-
-<!-- if only a username has been chosen -->
-{% elif session['browse_user'] %}
-    {% if session['rating_sort'] == -1 %}
+    {% elif session['rating_sort'] == -1 or session['rating_sort'] == 1 %}
         <div class="row">
             {% for review in review_ratings %}
-            {% if session['browse_user'] == review.username %}
             <div class="col s12 m6">
                 <div class="card-panel teal">
                     <span class="white-text">
@@ -324,13 +137,11 @@
                     </span>
                 </div>
             </div>
-            {% endif %}
             {% endfor %}
         </div>
-    {% elif session['game_sort'] == -1 %}
+    {% elif session['game_sort'] == -1 or session['game_sort'] == 1 %}
         <div class="row">
             {% for review in review_games %}
-            {% if session['browse_user'] == review.username %}
             <div class="col s12 m6">
                 <div class="card-panel teal">
                     <span class="white-text">
@@ -341,13 +152,11 @@
                     </span>
                 </div>
             </div>
-            {% endif %}
             {% endfor %}
         </div>
-    {% elif session['review_sort'] == -1 %}
+    {% elif session['review_sort'] == -1 or session['review_sort'] == 1 %}
         <div class="row">
             {% for review in review_latest %}
-            {% if session['browse_user'] == review.username %}
             <div class="col s12 m6">
                 <div class="card-panel teal">
                     <span class="white-text">
@@ -358,13 +167,11 @@
                     </span>
                 </div>
             </div>
-            {% endif %}
             {% endfor %}
         </div>
     {% else %}
         <div class="row">
-            {% for review in reviews %}
-            {% if session['browse_user'] == review.username %}
+            {% for review in all_reviews %}
             <div class="col s12 m6">
                 <div class="card-panel teal">
                     <span class="white-text">
@@ -375,183 +182,39 @@
                     </span>
                 </div>
             </div>
-            {% endif %}
             {% endfor %}
         </div>
     {% endif %}
-
-<!-- if only a game has been chosen -->
-{% elif session['game_name'] %}
-    {% if session['user_sort'] == -1 %}
-        <div class="row">
-            {% for review in review_users %}
-            {% if session['game_name'] == review.game_name %}
-            <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
+    <!-- Pagination -->
+    <div class="row">
+        <div class="col s6">
+            <ul class="pagination">
+                {% if PAGE_NUMBER == 1 %}
+                <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></a></li>
+                {% else %}
+                <li class="waves-effect"><a href="{{ url_for('page_count', num=(PAGE_NUMBER-1), where='browse') }}"><i class="material-icons">chevron_left</i></a></li>
+                {% endif %}
+                {% for page in range(pages) %}
+                <li class="waves-effect"><a href="{{ url_for('page_count', num=(page+1), where='browse') }}">{{page+1}}</a></li>
+                {%endfor%}
+                {% if PAGE_NUMBER == pages %}
+                <li class="waves-effect disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                {% else %}
+                <li class="waves-effect"><a href="{{ url_for('page_count', num=PAGE_NUMBER+1, where='browse' )}}"><i class="material-icons">chevron_right</i></a></li>
+                {% endif %}
+            </ul>
         </div>
-    {% elif session['rating_sort'] == -1 %}
-        <div class="row">
-            {% for review in review_ratings %}
-            {% if session['game_name'] == review.game_name %}
-            <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
+        <div class="col s6 right-align">
+            <ul class="pagination">
+                <li>Show Items</br>Per Page:</li>
+                <li class="waves-effect"><a href="{{url_for('change_limit', num=6, where='browse')}}">6</a></li>
+                <li class="waves-effect"><a href="{{url_for('change_limit', num=12, where='browse')}}">12</a></li>
+                <li class="waves-effect"><a href="{{url_for('change_limit', num=24, where='browse')}}">24</a></li>
+                <li class="waves-effect"><a href="{{url_for('change_limit', num=48, where='browse')}}">48</a></li>
+                <li class="waves-effect"><a href="{{url_for('change_limit', num=96, where='browse')}}">96</a></li>
+            </ul>
         </div>
-    {% elif session['review_sort'] == -1 %}
-        <div class="row">
-            {% for review in review_latest %}
-            {% if session['game_name'] == review.game_name %}
-            <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="row">
-            {% for review in reviews %}
-            {% if session['game_name'] == review.game_name %}
-                <div class="col s12 m6">
-                    <div class="card-panel teal">
-                        <span class="white-text">
-                            <p>{{ review.username }}</p>
-                            <p>{{ review.game_name }}</p>
-                            <p>{{ review.rating }}</p>
-                            <p>{{ review.description }}</p>
-                        </span>
-                    </div>
-                </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    {% endif %}
-
-<!-- if only rating has been chosen -->
-{% elif session['browse_rating'] %}
-    {% if session['user_sort'] == -1 %}
-        <div class="row">
-            {% for review in review_ratings %}
-            {% if session['browse_rating'] == review.rating %}
-                <div class="col s12 m6">
-                    <div class="card-panel teal">
-                        <span class="white-text">
-                            <p>{{ review.username }}</p>
-                            <p>{{ review.game_name }}</p>
-                            <p>{{ review.rating }}</p>
-                            <p>{{ review.description }}</p>
-                        </span>
-                    </div>
-                </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    {% elif session['game_sort'] == -1%}
-        <div class="row">
-            {% for review in review_games %}
-            {% if session['browse_rating'] == review.rating %}
-                <div class="col s12 m6">
-                    <div class="card-panel teal">
-                        <span class="white-text">
-                            <p>{{ review.username }}</p>
-                            <p>{{ review.game_name }}</p>
-                            <p>{{ review.rating }}</p>
-                            <p>{{ review.description }}</p>
-                        </span>
-                    </div>
-                </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    {% elif session['review_sort'] == -1%}
-        <div class="row">
-            {% for review in review_latest %}
-            {% if session['browse_rating'] == review.rating %}
-                <div class="col s12 m6">
-                    <div class="card-panel teal">
-                        <span class="white-text">
-                            <p>{{ review.username }}</p>
-                            <p>{{ review.game_name }}</p>
-                            <p>{{ review.rating }}</p>
-                            <p>{{ review.description }}</p>
-                        </span>
-                    </div>
-                </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="row">
-            {% for review in reviews %}
-            {% if session['browse_rating'] == review.rating %}
-                <div class="col s12 m6">
-                    <div class="card-panel teal">
-                        <span class="white-text">
-                            <p>{{ review.username }}</p>
-                            <p>{{ review.game_name }}</p>
-                            <p>{{ review.rating }}</p>
-                            <p>{{ review.description }}</p>
-                        </span>
-                    </div>
-                </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    {% endif %}
+    </div>
 {% endif %}
-<div class="row">
-    <div class="col s6">
-        <ul class="pagination">
-            {% if PAGE_NUMBER == 0 %}
-            <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></a></li>
-            {% else %}
-            <li class="waves-effect"><a href="{{ url_for('page_count', num=(PAGE_NUMBER-1)) }}"><i class="material-icons">chevron_left</i></a></li>
-            {% endif %}
-            {% for page in range(pages) %}
-            <li class="waves-effect"><a href="{{ url_for('page_count', num=page) }}">{{page+1}}</a></li>
-            {%endfor%}
-            {% if PAGE_NUMBER +1 >= pages %}
-            <li class="waves-effect disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-            {% else %}
-            <li class="waves-effect"><a href="{{ url_for('page_count', num=PAGE_NUMBER+1) }}"><i class="material-icons">chevron_right</i></a></li>
-            {% endif %}
-        </ul>
-    </div>
-    <div class="col s6 right-align">
-        <ul class="pagination">
-            <li>Show Items</br>Per Page:</li>
-            <li class="waves-effect"><a href="{{url_for('change_limit', num=5)}}">5</a></li>
-            <li class="waves-effect"><a href="{{url_for('change_limit', num=10)}}">10</a></li>
-            <li class="waves-effect"><a href="{{url_for('change_limit', num=25)}}">25</a></li>
-            <li class="waves-effect"><a href="{{url_for('change_limit', num=50)}}">50</a></li>
-            <li class="waves-effect"><a href="{{url_for('change_limit', num=100)}}">100</a></li>
-        </ul>
-    </div>
-</div>
 
 {% endblock %}
