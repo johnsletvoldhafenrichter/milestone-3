@@ -1,5 +1,4 @@
 import os
-import dotenv
 from app import app
 
 # config/startup

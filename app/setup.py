@@ -1,7 +1,5 @@
 import os
-import dotenv
 from app import app
-from dotenv import load_dotenv
 from flask import render_template, session, request, redirect, url_for
 from flask_pymongo import PyMongo
 # MongoDB config
