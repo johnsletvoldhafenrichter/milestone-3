@@ -2,8 +2,11 @@
 <div class="container">
     <div class="row white-text card-panel teal lighten-2 margin-bottom center-align border-radius">
         <h5>Welcome {{ session['username'] }}! These are your reviews!</h6>
-        <h5>You have created: {{ results }} reviews!</h5>
     </div>
+</div>
+<div class="row center-align">
+    <h5>You have created: {{ results }} reviews!</h5>
+    <p>To add a review or suggest a game hover the bottom right button!</p>
 </div>
 {% if session['game_name'] %}
 <div class="row">
@@ -60,7 +63,7 @@
                 </button>
             </div>
             <div class="col s6 right-align">
-                <a href="{{url_for('clear_sessions', where='your_reviews')}}" class="btn red waves-effect waves-light">Clear
+                <a href="{{url_for('clear_sessions', where='your_reviews')}}" class="btn red waves-effect waves-light">Clear Search
                     <i class="material-icons right">delete</i>
                 </a>
             </div>
@@ -78,33 +81,37 @@
 
     {% for review in ureviews %}
     <div class="col s12 m6">
-        <div class="card-panel border-radius teal lighten-2 ">
-            <div class="row">
-                <div class="white-text center-align heading-your-reviews">{{ review.game_name }}</div>
+        <div class="card small">
+            <div class="card-content teal">
+                <div class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</div>
             </div>
-            <div class="row">
-                <div class="white-text">{{ review.description }}
-                </div>
-                <div class="divider-card"></div>
-                <div class="white-text right-align">
-                    {{ review.username }} - Rating: {{ review.rating }}/5
-                </div>
+            <div class="card-content">
+                <div class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i class="material-icons right">more_vert</i></div>
             </div>
-            <div class="row">
-                <div class="col s6 left-align"><a href="{{url_for('edit_review', review_id=review._id)}}" class="btn">Edit</a></div>
-                <div class="col s6 right-align">
-                    <!-- Modal Trigger -->
-                    <a class="waves-effect waves-light btn modal-trigger red" href="#{{review._id}}">Delete</a>
-
-                    <!-- Modal Structure -->
-                    <div id="{{review._id}}" class="modal teal">
-                        <div class="modal-content center-align white-text">
-                            <h5>Are you sure you want to delete a review from: </br>{{ review.game_name }}?</h5>
-                            <p class="truncate">{{review.description}}</p>
-                            <p>Click outside the box to cancel action</p>
-                            <a href="{{url_for('delete_review', review_id=review._id)}}" class="btn red">Agree</a>
+            <div class="card-reveal">
+                <div class="card-title grey-text text-darken-4">
+                    <span><a href="{{url_for('edit_review', review_id=review._id)}}" class="btn">Edit</a></span>
+                    <span>
+                        <!-- Modal Trigger -->
+                        <a class="waves-effect waves-light btn modal-trigger red" href="#{{review._id}}">Delete</a>
+                        <!-- Modal Structure -->
+                        <div id="{{review._id}}" class="modal teal">
+                            <div class="modal-content center-align white-text">
+                                <h5>Delete?</h5>
+                                <a href="{{url_for('delete_review', review_id=review._id)}}" class="btn red">Agree</a>
+                            </div>
                         </div>
-                    </div>
+                    </span>
+                    <i class="material-icons right">close</i>
+                </div>
+                <p>{{ review.description }}</p>
+            </div>
+            <div class="card-action teal center-align">
+                <div class="col s12 m6">
+                    <div class="white-text text-darken-4">From User: {{ review.username }}</div>
+                </div>
+                <div class="col s12 m6">
+                    <div class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i class="material-icons rating">star_rate</i></div>
                 </div>
             </div>
         </div>

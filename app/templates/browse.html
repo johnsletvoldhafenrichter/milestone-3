@@ -7,8 +7,10 @@
                 <img src="{{ session['game_picture'] }}">
             </div>
             <div class="card-stacked">
-                <div class="card-content">
-                    <h4 class="teal white-text background-card-straight center-align">{{ session['game_name'] }}</h6>
+                <div class="card-content teal white-text center-align">
+                    <h5>{{ session['game_name'] }}</h5>
+                </div>
+                <div class="card-content">                    
                     <p>{{ session['game_description'] }}</p>
                 </div>
                 <div class="card-action teal">
@@ -109,20 +111,32 @@
         </div>
     </div>
 </div>
-    <div class="row">
-        <h3>Total Results: {{ results }}</h3>
+    <div class="row center-align">
+        <h5>Total Results: {{ results }}</h5>
     </div>
     {% if session['user_sort'] == -1 or session['user_sort'] == 1 %}
         <div class="row">
             {% for review in review_users %}
             <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
+                <div class="card small">
+                    <div class="card-content teal">
+                    <span class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</span>
+                    </div>
+                    <div class="card-content">
+                    <span class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i class="material-icons right">more_vert</i></span>
+                    </div>
+                    <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">{{ review.username }}'s Review:<i class="material-icons right">close</i></span>
+                    <p>{{ review.description }}</p>
+                    </div>
+                    <div class="card-action teal center-align">
+                        <div class="col s12 m6">
+                            <span class="white-text text-darken-4">From User: {{ review.username }}</span>
+                        </div>
+                        <div class="col s12 m6">
+                            <span class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i class="material-icons rating">star_rate</i></span>
+                        </div>
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -131,13 +145,25 @@
         <div class="row">
             {% for review in review_ratings %}
             <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
+                <div class="card small">
+                    <div class="card-content teal">
+                    <span class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</span>
+                    </div>
+                    <div class="card-content">
+                    <span class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i class="material-icons right">more_vert</i></span>
+                    </div>
+                    <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">{{ review.username }}'s Review:<i class="material-icons right">close</i></span>
+                    <p>{{ review.description }}</p>
+                    </div>
+                    <div class="card-action teal center-align">
+                        <div class="col s12 m6">
+                            <span class="white-text text-darken-4">From User: {{ review.username }}</span>
+                        </div>
+                        <div class="col s12 m6">
+                            <span class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i class="material-icons rating">star_rate</i></span>
+                        </div>
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -146,13 +172,25 @@
         <div class="row">
             {% for review in review_games %}
             <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
+                <div class="card small">
+                    <div class="card-content teal">
+                    <span class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</span>
+                    </div>
+                    <div class="card-content">
+                    <span class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i class="material-icons right">more_vert</i></span>
+                    </div>
+                    <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">{{ review.username }}'s Review:<i class="material-icons right">close</i></span>
+                    <p>{{ review.description }}</p>
+                    </div>
+                    <div class="card-action teal center-align">
+                        <div class="col s12 m6">
+                            <span class="white-text text-darken-4">From User: {{ review.username }}</span>
+                        </div>
+                        <div class="col s12 m6">
+                            <span class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i class="material-icons rating">star_rate</i></span>
+                        </div>
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -161,13 +199,25 @@
         <div class="row">
             {% for review in review_latest %}
             <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
+                <div class="card small">
+                    <div class="card-content teal">
+                    <span class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</span>
+                    </div>
+                    <div class="card-content">
+                    <span class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i class="material-icons right">more_vert</i></span>
+                    </div>
+                    <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">{{ review.username }}'s Review:<i class="material-icons right">close</i></span>
+                    <p>{{ review.description }}</p>
+                    </div>
+                    <div class="card-action teal center-align">
+                        <div class="col s12 m6">
+                            <span class="white-text text-darken-4">From User: {{ review.username }}</span>
+                        </div>
+                        <div class="col s12 m6">
+                            <span class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i class="material-icons rating">star_rate</i></span>
+                        </div>
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -176,13 +226,25 @@
         <div class="row">
             {% for review in all_reviews %}
             <div class="col s12 m6">
-                <div class="card-panel teal">
-                    <span class="white-text">
-                        <p>{{ review.username }}</p>
-                        <p>{{ review.game_name }}</p>
-                        <p>{{ review.rating }}</p>
-                        <p>{{ review.description }}</p>
-                    </span>
+                <div class="card small">
+                    <div class="card-content teal">
+                    <span class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</span>
+                    </div>
+                    <div class="card-content">
+                    <span class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i class="material-icons right">more_vert</i></span>
+                    </div>
+                    <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">{{ review.username }}'s Review:<i class="material-icons right">close</i></span>
+                    <p>{{ review.description }}</p>
+                    </div>
+                    <div class="card-action teal center-align">
+                        <div class="col s12 m6">
+                            <span class="white-text text-darken-4">From User: {{ review.username }}</span>
+                        </div>
+                        <div class="col s12 m6">
+                            <span class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i class="material-icons rating">star_rate</i></span>
+                        </div>
+                    </div>
                 </div>
             </div>
             {% endfor %}

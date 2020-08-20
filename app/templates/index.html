@@ -2,33 +2,38 @@
 <div class="container">
     <div class="row white-text card-panel teal lighten-2 margin-bottom border-radius">
         <h4 class="center-align">Welcome to the best gaming review site!</h4>
-        <h5 class="center-align">These are the last 6 reviews posted by our community!</h5>
-        <p>Our goal is to give you uncensored and raw reviews based on user experience for each game!</p>
-        <p>Feel free to explore all reviews under browse reviews or sign up in order to post and edit your own reviews!</p>
-        <p>Currently there are {{ users }} users, {{ games }} games and {{ reviews }} reviews on this website!</p>
+        <p>Our goal is to give you uncensored and raw reviews based on user experience for each game!
+        Feel free to explore all reviews under browse reviews or sign up in order to post and edit your own reviews!</p>
+        <p class="centre-align">Currently there are {{ users }} users, {{ games }} games and {{ reviews }} reviews on this website!</p>
     </div>
 </div>
 <div class="row">
+    <h5 class="center-align">These are the last 6 reviews posted by our community!</h5>
+</div>
+<div class="row">
     {% for review in lates_reviews %}
-        <div class="col s12 m6">
-            <div class="card-panel teal">
-                <span class="white-text">
-                    <div class="row">
-                        <div class="col s12 uppercase center-align">
-                            GAME: {{ review.game_name }}
-                        </div>
-                    </div>
-                    <div class="row center-align">
-                        <p>REVIEW:</p>
-                        <p>{{ review.description }}</p>
-                    </div>
-                </span>
-                <div class="row margin-bottom-none white-text">
-                    <div class="col s6 left-align">From: {{ review.username }}</div>
-                    <div class="col s6 right-align"><span>Rating: {{ review.rating }}/5</div>
+    <div class="col s12 m6">
+        <div class="card small">
+            <div class="card-content teal">
+                <div class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</div>
+            </div>
+            <div class="card-content">
+                <div class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i class="material-icons right">more_vert</i></div>
+            </div>
+            <div class="card-reveal">
+                <div class="card-title grey-text text-darken-4">{{ review.username }}'s Review:<i class="material-icons right">close</i></div>
+                <p>{{ review.description }}</p>
+            </div>
+            <div class="card-action teal center-align">
+                <div class="col s12 m6">
+                    <span class="white-text text-darken-4">From User: {{ review.username }}</span>
+                </div>
+                <div class="col s12 m6">
+                    <span class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i class="material-icons rating">star_rate</i></span>
                 </div>
             </div>
         </div>
+    </div>
     {% endfor %}
 </div>
 {% endblock %}

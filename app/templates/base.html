@@ -32,16 +32,10 @@
 
                         <!-- Modal Structure -->
                         <div id="logout" class="modal teal">
-                            <div class="modal-content">
-                                <h3 class="center-align">Are you sure?</h4>
-                                    </br>
-                                    <p class="left-align">Are you sure you want to logout?</p>
-                                    <p class="left-align">Click outside the box to cancel action</p>
-                            </div>
-                            <div class="row">
-                                <div class="modal-footer teal center-align">
-                                    <a href="{{url_for('logout')}}" class="btn red">Agree</a>
-                                </div>
+                            <div class="modal-content"><div class="modal-content center-align white-text">
+                                <h5>Are you sure you want to logout?</h5>
+                                <p>Click outside the box to cancel action</p>
+                                <a href="{{url_for('logout')}}" class="btn red">Agree</a>
                             </div>
                         </div>
                     </li>
