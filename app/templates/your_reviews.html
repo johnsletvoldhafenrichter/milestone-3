@@ -24,6 +24,20 @@
     </div>
 </div>
 {% endif %}
+{% if insert_game == True%}
+    <div class="row">
+        <div class="col s12">
+            <h6>Successfully inserted game suggestion!</h6>
+        </div>
+    </div>
+{% endif %}
+{% if insert_review == True %}
+    <div class="row">
+        <div class="col s12">
+            <h6>Successfully inserted review!</h6>
+        </div>
+    </div>
+{% endif %}
 <div class="row">
     <form action="{{ url_for('your_reviews') }}" method="POST">
             <div class="input-field col s12 m6">
@@ -142,9 +156,16 @@
             </ul>
         </div>
     </div>
-    <div class="fixed-action-btn action-button">
-        <a href="{{ url_for('add_review') }}" class="btn-floating btn-large waves-effect waves-light red tooltipped"
-            data-position="left" data-tooltip="Add a review!"><i class="material-icons">add</i></a>
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large red">
+            <i class="large material-icons">mode_edit</i>
+        </a>
+        <ul>
+            <li><a href="{{ url_for('add_review') }}" class="btn-floating tooltipped green darken-1" data-position="left"
+                    data-tooltip="Add Review"><i class="material-icons">grading</i></a></li>
+            <li><a href="{{ url_for('suggest_game') }}" class="btn-floating tooltipped red" data-position="left"
+                    data-tooltip="Suggest A Game"><i class="material-icons">games</i></a></li>
+        </ul>
     </div>
 </div>
 {% endblock %}

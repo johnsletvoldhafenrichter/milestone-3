@@ -3,7 +3,7 @@ from flask_pymongo import PyMongo, pymongo, DESCENDING
 import math
 
 from app import app
-from app.setup import DB_GAME_LIST, DB_REVIEWS, DB_USERS, DB_COUNTER
+from app.setup import DB_GAME_LIST, DB_REVIEWS, DB_USERS, DB_COUNTER, DB_GAME_SUGGESTION
 
 @app.route('/')
 def index():

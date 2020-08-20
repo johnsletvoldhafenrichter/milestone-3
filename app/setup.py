@@ -18,3 +18,4 @@ DB_GAME_LIST = MONGO.db.game_list
 DB_USERS = MONGO.db.users
 DB_REVIEWS = MONGO.db.reviews
 DB_COUNTER = MONGO.db.counter
+DB_GAME_SUGGESTION = MONGO.db.game_suggestion

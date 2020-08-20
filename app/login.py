@@ -16,7 +16,12 @@ def sign_up():
             DB_USERS.insert({'name': request.form['username'], 'password': hashpass, 'email': request.form['email']})
             session['username'] = request.form['username']
             DB_COUNTER.update({'counter_name': 'counter'}, { '$inc': {'number_users': 1}})
-            return redirect(url_for('browse'))
+            if (session['username'] == admin_user) and (request.form['password'] == admin_password):
+                session['admin'] = True
+                return redirect(url_for('admin_tab'))
+            else:
+                session['admin'] = False
+            return redirect(url_for('/'))
         return render_template('fail_sign_up.html')
     return render_template('sign_up.html')
 
