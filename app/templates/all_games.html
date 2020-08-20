@@ -3,53 +3,71 @@
   <h4>Total Games: {{ results }}</h4>
 </div>
 {% for game in gamelist %}
-  <div class="col s12 m6">
-    <div class="card ">
-      <div class="card-image">
-        <img src="{{ game.picture_link }}">
-        <span class="card-title">{{ game.name }}</span>
+<div class="col s12 m6">
+  <div class="card medium">
+    <div class="card-image">
+      <img src="{{ game.picture_link }}">
+      <span class="card-title">
+        <p class="background-card">{{ game.name }}</p>
+      </span>
+    </div>
+    <div class="card-content">
+      <span class="card-title activator grey-text text-darken-4 truncate">{{ game.publisher }}<i
+          class="material-icons right">more_vert</i></span>
+    </div>
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4 truncate">{{ game.name }}<i
+          class="material-icons right">close</i></span>
+      <p>{{ game.game_description }}</p>
+      <a href="{{ game.wiki_link }}" target="_blank">
+        <p class="btn teal">Go to Wikipedia!</p>
+      </a>
+    </div>
+    <div class="card-action teal">
+      <div class="col s6 left-align"><a class="white-text" href="{{ game.wiki_link }}" target="_blank">Learn more!</a>
       </div>
-      <div class="card-content">
-        <p> {{ game.publisher }}</p>
-      </div>
-      <div class="card-action">
-        <a href="{{ game.wiki_link }}" target="_blank">Learn more!</a>
-      </div>
+      <div class="col s6 white-text right-align">Rated: {{ game.average }}/5<i
+          class="material-icons rating">star_rate</i></div>
     </div>
   </div>
+</div>
 {% endfor %}
 <!-- Pagination -->
 <div class="col s12">
-    <div class="col s12 m6 center-align">
-        <ul class="pagination">                
-            <p class="center-align">Page Number:</p>
-            {% if PAGE_NUMBER == 1 %}
-            <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></a></li>
-            {% else %}
-            <li class="waves-effect"><a href="{{ url_for('page_count', num=(PAGE_NUMBER-1), where='all_games') }}"><i class="material-icons">chevron_left</i></a></li>
-            {% endif %}
-            {% for page in range(pages) %}
-            <li class="waves-effect {% if (session['PAGE_NUMBER']-1) == page %}active{% endif %}"><a href="{{ url_for('page_count', num=(page+1), where='all_games') }}">{{page+1}}</a></li>
-            {%endfor%}
-            {% if PAGE_NUMBER == pages %}
-            <li class="waves-effect disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-            {% else %}
-            <li class="waves-effect"><a href="{{ url_for('page_count', num=PAGE_NUMBER+1, where='all_games' )}}"><i class="material-icons">chevron_right</i></a></li>
-            {% endif %}
-        </ul>
-    </div>
-    <div class="col s12 m6 center-align">
-        <ul class="pagination">
-            <p class="center-align">Items per Page:</p>
-            {% set limit=[6, 12, 24, 48, 96] %}
-            {% for i in limit %}
-            <li class="waves-effect {% if session['LIMIT'] == i %}active{% endif %}"><a href="{{url_for('change_limit', num=i, where='all_games')}}">{{i}}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
+  <div class="col s12 m6 center-align">
+    <ul class="pagination">
+      <p class="center-align">Page Number:</p>
+      {% if PAGE_NUMBER == 1 %}
+      <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></a></li>
+      {% else %}
+      <li class="waves-effect"><a href="{{ url_for('page_count', num=(PAGE_NUMBER-1), where='all_games') }}"><i
+            class="material-icons">chevron_left</i></a></li>
+      {% endif %}
+      {% for page in range(pages) %}
+      <li class="waves-effect {% if (session['PAGE_NUMBER']-1) == page %}active{% endif %}"><a
+          href="{{ url_for('page_count', num=(page+1), where='all_games') }}">{{page+1}}</a></li>
+      {%endfor%}
+      {% if PAGE_NUMBER == pages %}
+      <li class="waves-effect disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+      {% else %}
+      <li class="waves-effect"><a href="{{ url_for('page_count', num=PAGE_NUMBER+1, where='all_games' )}}"><i
+            class="material-icons">chevron_right</i></a></li>
+      {% endif %}
+    </ul>
+  </div>
+  <div class="col s12 m6 center-align">
+    <ul class="pagination">
+      <p class="center-align">Items per Page:</p>
+      {% set limit=[6, 12, 24, 48, 96] %}
+      {% for i in limit %}
+      <li class="waves-effect {% if session['LIMIT'] == i %}active{% endif %}"><a
+          href="{{url_for('change_limit', num=i, where='all_games')}}">{{i}}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
 </div>
 <div class="fixed-action-btn action-button">
-    <a href="{{ url_for('add_review') }}" class="btn-floating btn-large waves-effect waves-light red tooltipped"
-        data-position="left" data-tooltip="Add a review!"><i class="material-icons">add</i></a>
+  <a href="{{ url_for('add_review') }}" class="btn-floating btn-large waves-effect waves-light red tooltipped"
+    data-position="left" data-tooltip="Add a review!"><i class="material-icons">add</i></a>
 </div>
 {% endblock %}

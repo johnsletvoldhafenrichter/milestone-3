@@ -1,0 +1,85 @@
+{% extends 'base.html'%} {% block content %}
+<div class="row">
+    <div class="col s6 left-align">
+        <div>Total Results: {{ results }}</div>
+    </div>
+    <div class="col s6 right-align">
+        <div class="btn teal">
+            <a href="{{url_for('admin_tab')}}">Admin Tab</a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <h6>Reviews:</h6>
+    </div>
+    <ul class="collapsible">
+        {% for  review in reviews %}
+        <li>
+            <div class="collapsible-header valign-wrapper">
+                <div class="col s8 m6 left-align">
+                    {{ review.description}}
+                </div>
+                <div class="col s4 m6 right-align">
+                    <p>{{ review.username}}</p>
+                    <p>{{ review.game_name}}</p>
+                    <p>{{ review.rating}}</p>
+                </div>
+            </div>
+            <div class="collapsible-body">
+                <div class="row">
+                    <div class="col s6 left-align"><a href="{{url_for('edit_review', review_id=review._id)}}" class="btn">Edit</a></div>
+                    <div class="col s6 right-align">
+                        <!-- Modal Trigger -->
+                        <a class="waves-effect waves-light btn modal-trigger red" href="#{{review._id}}">Delete</a>
+
+                        <!-- Modal Structure -->
+                        <div id="{{review._id}}" class="modal teal">
+                            <div class="modal-content">
+                                <h3 class="center-align">Are you sure?</h4>
+                                    </br>
+                                    <p class="left-align">Are you sure you want to delete {{ review.description }}?</p>
+                                    <p class="left-align">Click outside the box to cancel action</p>
+                            </div>
+                            <div class="modal-footer teal">
+                                <a href="{{url_for('delete_review', review_id=review._id)}}" class="btn red">Agree</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<!-- Pagination -->
+<div class="col s12">
+    <div class="col s12 m6 center-align">
+        <ul class="pagination">                
+            <p class="center-align">Page Number:</p>
+            {% if PAGE_NUMBER == 1 %}
+            <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></a></li>
+            {% else %}
+            <li class="waves-effect"><a href="{{ url_for('page_count', num=(PAGE_NUMBER-1), where='admin_tab_reviews') }}"><i class="material-icons">chevron_left</i></a></li>
+            {% endif %}
+            {% for page in range(pages) %}
+            <li class="waves-effect {% if (session['PAGE_NUMBER']-1) == page %}active{% endif %}"><a href="{{ url_for('page_count', num=(page+1), where='admin_tab_reviews') }}">{{page+1}}</a></li>
+            {%endfor%}
+            {% if PAGE_NUMBER == pages %}
+            <li class="waves-effect disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+            {% else %}
+            <li class="waves-effect"><a href="{{ url_for('page_count', num=PAGE_NUMBER+1, where='admin_tab_reviews' )}}"><i class="material-icons">chevron_right</i></a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="col s12 m6 center-align">
+        <ul class="pagination">
+            <p class="center-align">Items per Page:</p>
+            {% set limit=[6, 12, 24, 48, 96] %}
+            {% for i in limit %}
+            <li class="waves-effect {% if session['LIMIT'] == i %}active{% endif %}"><a href="{{url_for('change_limit', num=i, where='admin_tab_reviews')}}">{{i}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

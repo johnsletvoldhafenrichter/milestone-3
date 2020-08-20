@@ -2,16 +2,18 @@
 {% if session['game_name'] %}
 <div class="row">
     <div class="col s12">
-        <div class="card horizontal">
+        <div class="card medium horizontal">
             <div class="card-image">
                 <img src="{{ session['game_picture'] }}">
             </div>
             <div class="card-stacked">
                 <div class="card-content">
-                    <p>{{ session['game_name'] }}</p>
+                    <h4 class="teal white-text background-card-straight center-align">{{ session['game_name'] }}</h6>
+                    <p>{{ session['game_description'] }}</p>
                 </div>
-                <div class="card-action">
-                    <a href="{{session['game_wiki_link']}}" target="_blank">wikipedia link</a>
+                <div class="card-action teal">
+                    <div class="col s6 left-align"><a class="white-text" href="{{session['game_wiki_link']}}" target="_blank">Go to Wikipedia!</a></div>
+                    <div class="col s6 white-text right-align">Rated: {{ session['game_average'] }}/5<i class="material-icons rating">star_rate</i></div>
                 </div>
             </div>
         </div>

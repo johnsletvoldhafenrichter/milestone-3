@@ -1,6 +1,7 @@
 from flask import render_template, session, request, redirect, url_for
 from flask_pymongo import PyMongo, pymongo, DESCENDING
 import math
+import json
 
 from app import app
 from app.setup import DB_GAME_LIST, DB_REVIEWS, DB_USERS, DB_COUNTER, DB_GAME_SUGGESTION
@@ -36,7 +37,7 @@ def index():
 
 @app.route('/page_count/<num>/<where>')
 def page_count(num, where):
-    if where == 'browse':
+    if where == 'browse' or where == 'your_reviews' or where == 'admin_tab_reviews':
         session['PAGE_NUMBER'] = int(num)
         session['TOTAL_PAGES'] = math.ceil(DB_REVIEWS.find().count()/session['LIMIT'])
         if session['PAGE_NUMBER'] < 1:
@@ -45,8 +46,8 @@ def page_count(num, where):
         elif session['PAGE_NUMBER'] > session['TOTAL_PAGES']:
             session['PAGE_NUMBER'] = session['TOTAL_PAGES']
         session['SKIP'] = int((session['PAGE_NUMBER']-1)*session['LIMIT'])
-        return redirect(url_for('browse') + '#sorting')
-    elif where == 'all_games':
+        return redirect(url_for(where))
+    elif where == 'all_games' or where == 'admin_tab_games':
         session['PAGE_NUMBER'] = int(num)
         session['TOTAL_PAGES'] = math.ceil(DB_GAME_LIST.find().count()/session['LIMIT'])
         if session['PAGE_NUMBER'] < 1:
@@ -55,17 +56,27 @@ def page_count(num, where):
         elif session['PAGE_NUMBER'] > session['TOTAL_PAGES']:
             session['PAGE_NUMBER'] = session['TOTAL_PAGES']
         session['SKIP'] = int((session['PAGE_NUMBER']-1)*session['LIMIT'])
-        return redirect(url_for('all_games'))
-    elif where == 'your_reviews':
+        return redirect(url_for(where))
+    elif where == 'admin_tab_users':
         session['PAGE_NUMBER'] = int(num)
-        session['TOTAL_PAGES'] = math.ceil(DB_REVIEWS.find({'username': session['username']}).count()/session['LIMIT'])
+        session['TOTAL_PAGES'] = math.ceil(DB_USERS.find().count()/session['LIMIT'])
         if session['PAGE_NUMBER'] < 1:
             session['PAGE_NUMBER'] = 1
             session['SKIP'] = 0
         elif session['PAGE_NUMBER'] > session['TOTAL_PAGES']:
             session['PAGE_NUMBER'] = session['TOTAL_PAGES']
         session['SKIP'] = int((session['PAGE_NUMBER']-1)*session['LIMIT'])
-        return redirect(url_for('your_reviews') + '#search')
+        return redirect(url_for(where))
+    elif where == 'admin_tab_suggestions':
+        session['PAGE_NUMBER'] = int(num)
+        session['TOTAL_PAGES'] = math.ceil(DB_GAME_SUGGESTION.find().count()/session['LIMIT'])
+        if session['PAGE_NUMBER'] < 1:
+            session['PAGE_NUMBER'] = 1
+            session['SKIP'] = 0
+        elif session['PAGE_NUMBER'] > session['TOTAL_PAGES']:
+            session['PAGE_NUMBER'] = session['TOTAL_PAGES']
+        session['SKIP'] = int((session['PAGE_NUMBER']-1)*session['LIMIT'])
+        return redirect(url_for(where))
 
 @app.route('/change_limit/<num>/<where>')
 def change_limit(num, where):
@@ -77,7 +88,7 @@ def change_limit(num, where):
 
 @app.route('/all_games')
 def all_games():
-    gamelist=DB_GAME_LIST.find().skip(session['SKIP']).limit(session['LIMIT'])
+    gamelist=DB_GAME_LIST.find().sort('name', 1).skip(session['SKIP']).limit(session['LIMIT'])
     results=DB_GAME_LIST.find().count()
     pages=math.ceil(DB_GAME_LIST.find().count()/session['LIMIT'])
     return render_template('all_games.html',
@@ -160,13 +171,12 @@ def browse():
             game_objects = game_json.split(',')
             game_name_slice_front = game_objects[1][10:]
             game_name = game_name_slice_front[:-1]
-            game_pic_slice_front = game_objects[3][18:]
-            game_pic = game_pic_slice_front[:-1]
-            wiki_link_slice_front = game_objects[4][15:]
-            wiki_link = wiki_link_slice_front[:-1]
-            session['game_name']=game_name
-            session['game_picture']=game_pic
-            session['game_wiki_link']=wiki_link
+            game=DB_GAME_LIST.find_one({'name': game_name})
+            session['game_name']=game['name']
+            session['game_picture']=game['picture_link']
+            session['game_wiki_link']=game['wiki_link']
+            session['game_description']=game['game_description']
+            session['game_average']=game['average']
             session['game_json']=game_json
         if browse_user != "":
             session['browse_user']=request.form['browse_user']
@@ -373,7 +383,6 @@ def browse():
                                 pages=session['TOTAL_PAGES'],
                                 PAGE_NUMBER=session['PAGE_NUMBER'])
 
-
 @app.route('/your_reviews', methods=['POST', 'GET'])
 def your_reviews():
     if 'username' in session:
@@ -389,13 +398,11 @@ def your_reviews():
                 game_objects = game_json.split(',')
                 game_name_slice_front = game_objects[1][10:]
                 game_name = game_name_slice_front[:-1]
-                game_pic_slice_front = game_objects[3][18:]
-                game_pic = game_pic_slice_front[:-1]
-                wiki_link_slice_front = game_objects[4][15:]
-                wiki_link = wiki_link_slice_front[:-1]
-                session['game_name']=game_name
-                session['game_picture']=game_pic
-                session['game_wiki_link']=wiki_link
+                game=DB_GAME_LIST.find_one({'name': game_name})
+                session['game_name']=game['name']
+                session['game_picture']=game['picture_link']
+                session['game_wiki_link']=game['wiki_link']
+                session['game_description']=game['game_description']
             if browse_rating != "":
                 session['browse_rating']=int(request.form['browse_rating'])
             return redirect(url_for('your_reviews'))
@@ -463,3 +470,55 @@ def top_games():
                             best_avg=best_avg,
                             most_reviews=most_reviews,
                             most_rating=most_rating)
+                        
+@app.route('/admin_tab_games')
+def admin_tab_games():
+    if session['admin']:
+        gamelist=DB_GAME_LIST.find().skip(session['SKIP']).limit(session['LIMIT'])
+        pages=math.ceil(DB_GAME_LIST.find().count()/session['LIMIT'])
+        results=DB_GAME_LIST.find().count()
+        return render_template('admin_tab_games.html',
+                                gamelist=gamelist,
+                                pages=pages,
+                                results=results,
+                                PAGE_NUMBER=session['PAGE_NUMBER'])
+    return render_template('no_login.html')
+
+@app.route('/admin_tab_users')
+def admin_tab_users():
+    if session['admin']:
+        users=DB_USERS.find().skip(session['SKIP']).limit(session['LIMIT'])
+        pages=math.ceil(DB_USERS.find().count()/session['LIMIT'])
+        results=DB_USERS.find().count()
+        return render_template('admin_tab_users.html',
+                                users=users,
+                                pages=pages,
+                                results=results,
+                                PAGE_NUMBER=session['PAGE_NUMBER'])
+    return render_template('no_login.html')
+
+@app.route('/admin_tab_suggestions')
+def admin_tab_suggestions():
+    if session['admin']:
+        suggestions=DB_GAME_SUGGESTION.find().skip(session['SKIP']).limit(session['LIMIT'])
+        pages=math.ceil(DB_GAME_SUGGESTION.find().count()/session['LIMIT'])
+        results=DB_GAME_SUGGESTION.find().count()
+        return render_template('admin_tab_suggestions.html',
+                                suggestions=suggestions,
+                                pages=pages,
+                                results=results,
+                                PAGE_NUMBER=session['PAGE_NUMBER'])
+    return render_template('no_login.html')
+
+@app.route('/admin_tab_reviews')
+def admin_tab_reviews():
+    if session['admin']:
+        reviews=DB_REVIEWS.find().sort('review_id', 1).skip(session['SKIP']).limit(session['LIMIT'])
+        pages=math.ceil(DB_REVIEWS.find().count()/session['LIMIT'])
+        results=DB_REVIEWS.find().count()
+        return render_template('admin_tab_reviews.html',
+                                reviews=reviews,
+                                pages=pages,
+                                results=results,
+                                PAGE_NUMBER=session['PAGE_NUMBER'])
+    return render_template('no_login.html')

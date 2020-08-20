@@ -21,6 +21,7 @@ def update_game(game_id):
             'publisher':request.form.get('publisher'),
             'picture_link': request.form.get('picture_link'),
             'wiki_link': request.form.get('wiki_link'),
+            'game_description': request.form.get('game_description')
         })
         return redirect(url_for('admin_tab'))
     return render_template('no_login.html')

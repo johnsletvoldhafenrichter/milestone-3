@@ -2,7 +2,7 @@ from flask import render_template, session, request, redirect, url_for
 from bson.objectid import ObjectId
 
 from app import app
-from app.setup import DB_GAME_LIST, DB_REVIEWS, DB_USERS, DB_COUNTER
+from app.setup import DB_GAME_LIST, DB_REVIEWS, DB_USERS, DB_COUNTER, DB_GAME_SUGGESTION
 
 @app.route('/delete_game/<game_id>/<game_name>')
 def delete_game(game_id, game_name):
@@ -46,3 +46,12 @@ def clear_sessions(where):
     session['LIMIT'] = int(6)
 
     return redirect(url_for(where))
+
+@app.route('/delete_suggested_game/<game_id>/<game_name>')
+def delete_suggested_game(game_id, game_name):
+    if session['admin']:
+        DB_COUNTER.update({'counter_name': 'counter'}, { '$inc': {'number_suggestions': -1}})
+        DB_GAME_SUGGESTION.remove({'_id': ObjectId(game_id)})
+        return redirect(url_for('admin_tab'))
+    return render_template('no_login.html')
+

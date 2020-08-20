@@ -14,7 +14,8 @@
             </div>
             <div class="card-stacked">
                 <div class="card-content">
-                    <p>{{ session['game_name'] }}</p>
+                    <h6>{{ session['game_name'] }}</h6>
+                    <p>{{ session['game_description'] }}</p>
                 </div>
                 <div class="card-action">
                     <a href="{{session['game_wiki_link']}}" target="_blank">wikipedia link</a>
@@ -23,20 +24,6 @@
         </div>
     </div>
 </div>
-{% endif %}
-{% if insert_game == True%}
-    <div class="row">
-        <div class="col s12">
-            <h6>Successfully inserted game suggestion!</h6>
-        </div>
-    </div>
-{% endif %}
-{% if insert_review == True %}
-    <div class="row">
-        <div class="col s12">
-            <h6>Successfully inserted review!</h6>
-        </div>
-    </div>
 {% endif %}
 <div class="row">
     <form action="{{ url_for('your_reviews') }}" method="POST">

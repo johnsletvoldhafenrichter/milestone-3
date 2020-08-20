@@ -1,4 +1,5 @@
 from flask import render_template, redirect, session, request, url_for
+from bson.objectid import ObjectId
 
 from app import app
 from app.setup import DB_GAME_LIST, DB_REVIEWS, DB_COUNTER, DB_GAME_SUGGESTION
@@ -18,7 +19,7 @@ def insert_review():
     DB_COUNTER.update({'counter_name': 'counter'}, { '$inc': {'number_reviews': 1}})
     if session['admin']:
         return redirect(url_for('admin_tab'))
-    return redirect(url_for('your_reviews', insert_review=True))
+    return redirect(url_for('your_reviews'))
 
 # adding a game
 @app.route('/add_game')
@@ -31,8 +32,9 @@ def add_game():
 def insert_game():
     count_games = DB_COUNTER.find_one({'counter_name': 'counter'})
     new_count=int(count_games['number_games']+1)
-    DB_GAME_LIST.insert({'game_id': int(new_count+1), 'name': request.form['name'], 'publisher': request.form['publisher'], 'picture_link': request.form['picture_link'], 'wiki_link': request.form['wiki_link'], 'average': 0})
+    DB_GAME_LIST.insert({'name': request.form['name'], 'publisher': request.form['publisher'], 'picture_link': request.form['picture_link'], 'wiki_link': request.form['wiki_link'], 'game_description': request.form['game_description'], 'game_id': int(new_count+1), 'average': 0})
     DB_COUNTER.update({'counter_name': 'counter'}, { '$inc': {'number_games': 1}})
+    DB_GAME_SUGGESTION.remove({'name': request.form['name']})
     return redirect(url_for('admin_tab'))
 
 @app.route('/suggest_game')
@@ -47,7 +49,17 @@ def insert_suggest_game():
     new_count=int(count_suggestions['number_suggestions']+1)
     DB_GAME_SUGGESTION.insert({'suggestion_id': int(new_count+1), 'name': request.form['name'], 'publisher': request.form['publisher'], 'picture_link': request.form['picture_link'], 'wiki_link': request.form['wiki_link']})
     DB_COUNTER.update({'counter_name': 'counter'}, { '$inc': {'number_suggestions': 1}})
-    
-    return redirect(url_for('your_reviews', insert_game=True))
+    return redirect(url_for('your_reviews'))
+
+@app.route('/add_suggest_game/<game_id>')
+def add_suggest_game(game_id):
+    if 'admin' in session:        
+        game = DB_GAME_SUGGESTION.find_one({"_id": ObjectId(game_id)})
+        return render_template('add_suggest_game.html',
+                                game=game)
+    return render_template('no_login.html')
+
+
+
 
 
