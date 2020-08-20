@@ -21,7 +21,7 @@ def sign_up():
                 return redirect(url_for('admin_tab'))
             else:
                 session['admin'] = False
-            return redirect(url_for('/'))
+            return redirect(url_for('browse'))
         return render_template('fail_sign_up.html')
     return render_template('sign_up.html')
 
