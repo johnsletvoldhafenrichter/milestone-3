@@ -5,10 +5,11 @@
     </div>
     <div class="col s6 right-align">
         <div class="btn teal">
-            <a href="{{url_for('admin_tab')}}">Admin Tab</a>
+            <a href="{{url_for('admin_tab')}}">Admin</a>
         </div>
     </div>
 </div>
+{% if results > 0 %}
 <div class="row">
     <div class="col s12">
         <h6>Suggestions:</h6>
@@ -30,15 +31,11 @@
 
                         <!-- Modal Structure -->
                         <div id="{{game._id}}" class="modal teal">
-                            <div class="modal-content">
-                                <h3 class="center-align">Are you sure?</h4>
-                                    </br>
-                                    <p class="left-align">Are you sure you want to delete {{ game.name }}?</p>
-                                    <p class="left-align">Click outside the box to cancel action</p>
-                            </div>
-                            <div class="modal-footer teal">
-                                <a href="{{url_for('delete_suggested_game', game_id=game._id, game_name=game.name)}}"
-                                    class="modal-close waves-effect waves-green btn red">Agree</a>
+                            <div class="modal-content center-align white-text">
+                                <h5>Are you sure you want to delete this suggestion: </br>{{ game.name }}?</h5>
+                                <p class="truncate">{{game.game_description}}</p>
+                                <p>Click outside the box to cancel action</p>
+                                <a href="{{url_for('delete_suggested_game', game_id=game._id, game_name=game.name)}}" class="btn red">Agree</a>
                             </div>
                         </div>
                     </div>
@@ -71,11 +68,12 @@
     <div class="col s12 m6 center-align">
         <ul class="pagination">
             <p class="center-align">Items per Page:</p>
-            {% set limit=[6, 12, 24, 48, 96] %}
+            {% set limit=[2, 6, 12, 24, 48, 96] %}
             {% for i in limit %}
             <li class="waves-effect {% if session['LIMIT'] == i %}active{% endif %}"><a href="{{url_for('change_limit', num=i, where='admin_tab_suggestions')}}">{{i}}</a></li>
             {% endfor %}
         </ul>
     </div>
 </div>
+{% endif %}
 {% endblock %}

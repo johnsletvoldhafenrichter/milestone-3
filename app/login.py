@@ -51,6 +51,7 @@ def logout():
 # root access and home page
 @app.route('/admin_tab')
 def admin_tab():
+    print(session['SKIP'])
     if session['admin']:
         return render_template('admin_tab.html')
     return render_template('no_login.html')

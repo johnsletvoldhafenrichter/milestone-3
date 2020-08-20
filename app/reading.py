@@ -22,7 +22,7 @@ def index():
     session['browse_rating']=False
     session['game_name']=False
     
-    latest_reviews = DB_REVIEWS.find().sort('reviews_id', -1).limit(6)
+    latest_reviews = DB_REVIEWS.find().sort('review_id', -1).limit(6)
     num_count=DB_COUNTER.find_one({'counter_name': 'counter'})
     games=num_count['number_games']
     reviews=num_count['number_reviews']
@@ -152,7 +152,9 @@ def browse():
     review_games_sort=DB_REVIEWS.find().sort('game_name', session['game_sort'])
     review_latest_sort=DB_REVIEWS.find().sort('review_id', session['review_sort'])
 
+    pages=math.ceil(DB_REVIEWS.find().count()/session['LIMIT'])
     all_reviews = DB_REVIEWS.find().skip(session['SKIP']).limit(session['LIMIT'])
+    results=DB_REVIEWS.find().count()
 
     review_ratings=review_ratings_sort.skip(session['SKIP']).limit(session['LIMIT'])
     review_users=review_users_sort.skip(session['SKIP']).limit(session['LIMIT'])
@@ -163,6 +165,7 @@ def browse():
     games = DB_GAME_LIST.find().sort('name', 1)
 
     if request.method == 'POST':
+        session['PAGE_NUMBER'] = 1
         game_json = request.form['game_select']
         browse_user=request.form['browse_user']
         browse_rating=request.form['browse_rating']
@@ -378,9 +381,10 @@ def browse():
                                 review_games=review_games,
                                 review_latest=review_latest,
                                 all_reviews=all_reviews,
+                                results=results,
                                 users=users,
                                 games=games,
-                                pages=session['TOTAL_PAGES'],
+                                pages=pages,
                                 PAGE_NUMBER=session['PAGE_NUMBER'])
 
 @app.route('/your_reviews', methods=['POST', 'GET'])
@@ -500,6 +504,7 @@ def admin_tab_users():
 @app.route('/admin_tab_suggestions')
 def admin_tab_suggestions():
     if session['admin']:
+        print(session['SKIP'])
         suggestions=DB_GAME_SUGGESTION.find().skip(session['SKIP']).limit(session['LIMIT'])
         pages=math.ceil(DB_GAME_SUGGESTION.find().count()/session['LIMIT'])
         results=DB_GAME_SUGGESTION.find().count()
