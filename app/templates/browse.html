@@ -250,6 +250,7 @@
             {% endfor %}
         </div>
     {% endif %}
+{% if results > 0 %}
     <!-- Pagination -->
     <div class="col s12">
         <div class="col s12 m6 center-align">
@@ -280,5 +281,5 @@
             </ul>
         </div>
     </div>
-
+{% endif %}
 {% endblock %}
