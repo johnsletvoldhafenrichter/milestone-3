@@ -244,11 +244,11 @@ I tested my code with the following validation services:
 * W3C Markup Validation  
 * W3C CSS validation
 * JSHint
-* PEP8 Online
 
 On my local machine i used the standard validation and autocorrect of:
 * VScode
-* Werkzeug 
+* Werkzeug
+* autopep8
 
 ### Responsiveness
 Since my project was hosted almost immideately and i constantly had people looked at my progress i got a lot of feedback in regards to responsiveness and I also addressed all the issues that were brought up. To my knowledge there are no responsiveness issues at the current time.
@@ -306,6 +306,7 @@ These are the browsers used throughout the testing/development:
 ## Deployment
 ### Deployment To Heroku
 In order the deploy my project to Heroku I have completed the following steps:
+
  **VScode IDE**
 * Created a Procfile with the command echo web: python run.py > Procfile. (Windows has a specific problem which I ran into where the Procfile is specifically declared as a .txt file and therefore ended up not beeing able to be read by heroku. Simply open the Procfile in Notepad++ copy everything, delete the file and save the copied information into a new Notepad++ file which will be saved and named Procfile without any extension.)
 * Created a requirement.txt file so Heroku know what python modules it will need to run my application with the command pip freeze --local > requirements.txt
@@ -322,14 +323,13 @@ In order the deploy my project to Heroku I have completed the following steps:
 * In the "Manual Deployment" section of this page, made sure the master branch is selected and then click "Deploy Branch".
 * The site is now successfully deployed.
 
-
-
 ### Link to the deployed page:
 * https://best-reviews.herokuapp.com/¨
 
 ## Credits
-* picture links, game descriptions and wikipedia links are taking from Wikipedia.
+* All picture links, game descriptions and wikipedia links are taking from Wikipedia.
 * Logo is taken from https://www.pexels.com/photo/pink-and-black-nintendo-ds-1462725/
+* All of the reviews have been taken from https://www.metacritic.com/
 
 ### Tutorials
 * https://www.youtube.com/watch?v=jJ4awOToB6k for learning how to create hash passwords
@@ -337,5 +337,5 @@ In order the deploy my project to Heroku I have completed the following steps:
 
 ### Acknowledgements
 * Special thanks to friends, family and coworkers for helping me during development, testing and giving me ideas and implementations that i could use to create this project.
-* https://github.com/stephyraju/spiceworld/blob/master/README.md I used this project as a guideline for my README.MD
-
+* https://github.com/stephyraju/spiceworld/blob/master/README.md I used this project as a guideline for my README.md, and
+pagination, the section of how to deploy the project to heroku is almost completely copied since it was exactly what I did. 

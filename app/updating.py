@@ -4,9 +4,11 @@ from app import app
 from app.setup import DB_GAME_LIST, DB_USERS, DB_REVIEWS
 
 
-# rendering template for editing a game, only available for admin
 @app.route('/edit_game/<game_id>')
 def edit_game(game_id):
+    '''
+    rendering template for editing a game, only available for admin
+    '''
     if session['admin']:
         game = DB_GAME_LIST.find_one({"_id": ObjectId(game_id)})
         return render_template(
@@ -15,10 +17,12 @@ def edit_game(game_id):
     return render_template('no_login.html')
 
 
-# updating database according to changes made
-# in edit_game template, only available for admin
 @app.route('/update_game/<game_id>', methods=["POST"])
 def update_game(game_id):
+    '''
+    updating database according to changes made
+    in edit_game template, only available for admin
+    ''' 
     if session['admin']:
         DB_GAME_LIST.update(
             {
@@ -34,9 +38,11 @@ def update_game(game_id):
     return render_template('no_login.html')
 
 
-# rendering template for editing a review
 @app.route('/edit_review/<review_id>')
 def edit_review(review_id):
+    '''
+    rendering template for editing a review
+    '''
     if session['username']:
         review = DB_REVIEWS.find_one({"_id": ObjectId(review_id)})
         return render_template(
@@ -46,9 +52,11 @@ def edit_review(review_id):
     return render_template('no_login.html')
 
 
-# updating database according to changes made in edit_review
 @app.route('/update_review/<review_id>', methods=["POST"])
 def update_review(review_id):
+    '''
+    updating database according to changes made in edit_review
+    '''
     if session['username']:
         DB_REVIEWS.update(
             {
@@ -65,9 +73,11 @@ def update_review(review_id):
     return render_template('no_login.html')
 
 
-# rendering template for editing a user, only available for admin
 @app.route('/edit_user/<user_id>')
 def edit_user(user_id):
+    '''
+    rendering template for editing a user, only available for admin
+    '''
     if session['admin']:
         user = DB_USERS.find_one({"_id": ObjectId(user_id)})
         return render_template(
@@ -76,10 +86,12 @@ def edit_user(user_id):
     return render_template('no_login.html')
 
 
-# updating database according to changes
-# made in edit_user, only available for admin
 @app.route('/update_user/<user_id>/<user_name>', methods=["POST"])
 def update_user(user_id, user_name):
+    '''
+    updating database according to changes
+    made in edit_user, only available for admin
+    '''
     if session['admin']:
         existing_user_name = DB_USERS.find_one({"name": user_name})
         if existing_user_name is None:

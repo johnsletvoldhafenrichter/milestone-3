@@ -1,38 +1,47 @@
 {% extends 'base.html'%} {% block content %}
-
-<div class="row">
-    <div class="col s12 m3">
-        <a href="{{url_for('admin_tab_games')}}">
-            <div class="btn teal">Game List</div>
-        </a>
+<div class="container">
+    <div class="row white-text card-panel teal lighten-2 margin-bottom center-align border-radius">
+        <h5>Welcome {{ session['username'] }}! This is the Admin Page!</h5>
     </div>
-    <div class="col s12 m3">
-        <a href="{{url_for('admin_tab_users')}}">
-            <div class="btn teal">User List</div>
-        </a>
+    <div class="row center-align">
+        <h5>Here you can go and edit everything in the database!</h5>
+        <p>To add a review, game or user hover the bottom right button! To add a suggestion go into the suggestion tab!
+        </p>
     </div>
-    <div class="col s12 m3">
-        <a href="{{url_for('admin_tab_suggestions')}}">
-            <div class="btn teal">Suggestion List</div>
-        </a>
+    <div class="row center-align">
+        <div class="col s12 m3 margin-bottom-admin">
+            <div class="btn teal">
+                <a href="{{url_for('admin_tab_games')}}">Games</a>
+            </div>
+        </div>
+        <div class="col s12 m3 margin-bottom-admin">
+            <div class="btn teal">
+                <a href="{{url_for('admin_tab_users')}}">Users</a>
+            </div>
+        </div>
+        <div class="col s12 m3 margin-bottom-admin">
+            <div class="btn teal">
+                <a href="{{url_for('admin_tab_suggestions')}}">Suggestions</a>
+            </div>
+        </div>
+        <div class="col s12 m3 margin-bottom-admin">
+            <div class="btn teal">
+                <a href="{{url_for('admin_tab_reviews')}}">Reviews</a>
+            </div>
+        </div>
     </div>
-    <div class="col s12 m3">
-        <a href="{{url_for('admin_tab_reviews')}}">
-            <div class="btn teal">Review List</div>
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large red">
+            <i class="large material-icons">mode_edit</i>
         </a>
+        <ul>
+            <li><a href="{{ url_for('add_review') }}" class="btn-floating tooltipped green darken-1"
+                    data-position="left" data-tooltip="Add Review"><i class="material-icons">grading</i></a></li>
+            <li><a href="{{ url_for('sign_up') }}" class="btn-floating tooltipped blue" data-position="left"
+                    data-tooltip="Add User"><i class="material-icons">face</i></a></li>
+            <li><a href="{{ url_for('add_game') }}" class="btn-floating tooltipped red" data-position="left"
+                    data-tooltip="Add Game"><i class="material-icons">games</i></a></li>
+        </ul>
     </div>
-</div>
-<div class="fixed-action-btn">
-    <a class="btn-floating btn-large red">
-        <i class="large material-icons">mode_edit</i>
-    </a>
-    <ul>
-        <li><a href="{{ url_for('add_review') }}" class="btn-floating tooltipped green darken-1" data-position="left"
-                data-tooltip="Add Review"><i class="material-icons">grading</i></a></li>
-        <li><a href="{{ url_for('sign_up') }}" class="btn-floating tooltipped blue" data-position="left"
-                data-tooltip="Add User"><i class="material-icons">face</i></a></li>
-        <li><a href="{{ url_for('add_game') }}" class="btn-floating tooltipped red" data-position="left"
-                data-tooltip="Add Game"><i class="material-icons">games</i></a></li>
-    </ul>
 </div>
 {% endblock %}

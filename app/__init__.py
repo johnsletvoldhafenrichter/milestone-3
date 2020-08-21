@@ -2,6 +2,7 @@ from flask import Flask
 
 # Create app instance
 app = Flask(__name__, template_folder='templates')
+
 # Dependencies
 from app import setup
 from app import login

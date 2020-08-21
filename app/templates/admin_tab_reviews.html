@@ -87,5 +87,18 @@
         </ul>
     </div>
 </div>
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large red">
+        <i class="large material-icons">mode_edit</i>
+    </a>
+    <ul>
+        <li><a href="{{ url_for('add_review') }}" class="btn-floating tooltipped green darken-1" data-position="left"
+                data-tooltip="Add Review"><i class="material-icons">grading</i></a></li>
+        <li><a href="{{ url_for('sign_up') }}" class="btn-floating tooltipped blue" data-position="left"
+                data-tooltip="Add User"><i class="material-icons">face</i></a></li>
+        <li><a href="{{ url_for('add_game') }}" class="btn-floating tooltipped red" data-position="left"
+                data-tooltip="Add Game"><i class="material-icons">games</i></a></li>
+    </ul>
+</div>
 {% endif %}
 {% endblock %}

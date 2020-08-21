@@ -6,14 +6,14 @@ from app.setup import (
                         DB_GAME_LIST,
                         DB_REVIEWS,
                         DB_COUNTER,
-                        admin_password,
-                        admin_user,
                         DB_GAME_SUGGESTION)
 
 
-# Sign up and Login pages and authentication
 @app.route('/sign_up', methods=['POST', 'GET'])
 def sign_up():
+    '''
+    Sign up and Login pages and authentication
+    '''
     if request.method == 'POST':
         existing_user = DB_USERS.find_one({'email': request.form['email']})
         existing_username = DB_USERS.find_one(
@@ -28,7 +28,8 @@ def sign_up():
                 {
                     'name': request.form['username'],
                     'password': hashpass,
-                    'email': request.form['email']
+                    'email': request.form['email'],
+                    'admin': False
                     })
             session['username'] = request.form['username']
             DB_COUNTER.update(
@@ -38,11 +39,7 @@ def sign_up():
                         '$inc': {
                             'number_users': 1
                             }})
-            if (session['username'] == admin_user) and (request.form['password'] == admin_password):
-                session['admin'] = True
-                return redirect(url_for('admin_tab'))
-            else:
-                session['admin'] = False
+            session['admin'] = False
             return redirect(url_for('index'))
         return render_template('fail_sign_up.html')
     return render_template('sign_up.html')
@@ -54,9 +51,9 @@ def login():
         login_user = DB_USERS.find_one({'email': request.form['email']})
 
         if login_user:
-            if bcrypt.hashpw(request.form['password'].encode('utf-8'), login_user['password']) == login_user['password']:
+            if bcrypt.checkpw(request.form['password'].encode('utf8'), login_user['password']):
                 session['username'] = login_user['name']
-                if (session['username'] == admin_user) and (request.form['password'] == admin_password):
+                if login_user['admin'] == True:
                     session['admin'] = True
                     return redirect(url_for('admin_tab'))
                 else:
@@ -66,16 +63,20 @@ def login():
     return render_template('login.html')
 
 
-# clear all sessions and therefor be logged out
 @app.route('/logout')
 def logout():
+    '''
+    clear all sessions and therefor be logged out
+    '''
     session.clear()
     return redirect(url_for('index'))
 
 
-# root/admin access and home page for admin
 @app.route('/admin_tab')
 def admin_tab():
+    '''
+    root/admin access and home page for admin
+    '''
     if session['admin']:
         return render_template('admin_tab.html')
     return render_template('no_login.html')

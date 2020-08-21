@@ -4,9 +4,11 @@ from app import app
 from app.setup import DB_GAME_LIST, DB_REVIEWS, DB_USERS, DB_GAME_SUGGESTION
 
 
-# admin only deleting a game from database
 @app.route('/delete_game/<game_id>/<game_name>')
 def delete_game(game_id, game_name):
+    '''
+    admin only deleting a game from database
+    '''
     if session['admin']:
         DB_REVIEWS.remove({'game_name': game_name})
         DB_GAME_LIST.remove({'_id': ObjectId(game_id)})
@@ -14,9 +16,11 @@ def delete_game(game_id, game_name):
     return render_template('no_login.html')
 
 
-# admin only deleting a user from database
 @app.route('/delete_user/<user_id>/<review_name>')
 def delete_user(user_id, review_name):
+    '''
+    admin only deleting a user from database
+    '''
     if session['admin']:
         DB_REVIEWS.remove({'username': review_name})
         DB_USERS.remove({'_id': ObjectId(user_id)})
@@ -24,9 +28,11 @@ def delete_user(user_id, review_name):
     return render_template('no_login.html')
 
 
-# deleting a review that you created, or admin can delete all reviews
 @app.route('/delete_review/<review_id>')
 def delete_review(review_id):
+    '''
+    deleting a review that you created, or admin can delete all reviews
+    '''
     if session['username']:
         DB_REVIEWS.remove({'_id': ObjectId(review_id)})
         if session['admin']:
@@ -35,9 +41,11 @@ def delete_review(review_id):
     return render_template('no_login.html')
 
 
-# resetting the sorting and and choices made in browsing
 @app.route('/clear_sessions/<where>')
 def clear_sessions(where):
+    '''
+    resetting the sorting and and choices made in browsing
+    '''
     session['browse_user'] = False
     session['browse_rating'] = False
     session['game_name'] = False
@@ -47,9 +55,11 @@ def clear_sessions(where):
     return redirect(url_for(where))
 
 
-# admin only deleting suggestions
 @app.route('/delete_suggested_game/<game_id>/<game_name>')
 def delete_suggested_game(game_id, game_name):
+    '''
+    admin only deleting suggestions
+    '''
     if session['admin']:
         DB_GAME_SUGGESTION.remove({'_id': ObjectId(game_id)})
         return redirect(url_for('admin_tab_suggestions'))
