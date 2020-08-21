@@ -1,8 +1,6 @@
 from flask import Flask
-
 # Create app instance
 app = Flask(__name__, template_folder='templates')
-
 # MAIN DEPENDENCIES
 from app import setup
 from app import login

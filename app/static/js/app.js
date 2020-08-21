@@ -1,6 +1,5 @@
-// On DOM Loaded
+// On DOM Loaded initialization of materialize JavaScript functions in order to use certain classes and tools 
 document.addEventListener('DOMContentLoaded', function () {
-
     let sidenavEl = document.querySelectorAll('.sidenav');
     M.Sidenav.init(sidenavEl);
 

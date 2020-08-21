@@ -1,98 +1,72 @@
+/* personal changes to css after materialize framework */
 body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
     background-color: rgba(199, 178, 178, 0.137);
-  }
-
-  main {
+}
+main {
     flex: 1 0 auto;
-  }
-/* margins, padding and generic styling */
-.no-padding {
-    padding: 0;
 }
-.margin-left {
-    margin-left: 1em;
-}
-
-.margin-bottom {
-    margin-bottom: 4em;
-}
-
-.margin-bottom-none {
-    margin-bottom: 0;
-}
-
-#margin-left-right {
-    margin: 1em 1.4em;
-}
-
-.material-icons.rating {
-    font-size: 1em;
-    color: gold;
-}
-
-.border-radius {
-    border-radius: 10px;
-}
-
-.nav-img {
-    max-width: 100%;
-}
-
-.base-content {
-    margin-top: 5em;
-}
-
-.invalid-input {
-    border-radius: 20px;
-    background-color: #ef5350;
-    color: antiquewhite;
-}
-
-nav ul li.active {
-    background-color: rgba(0,0,0,0.3);
-}
-
-.sidenav li.active {
-    background-color: rgba(0,0,0,0.3);
-}
-
-.background-card {
-    padding:0.5rem;
-    margin: 0;
-    background-color: rgba(0,0,0,0.7);
-    border-radius: 30px;
-}
-
-.background-card-straight {
-    padding:0.5rem;
-    margin: 0 0 0.5rem 0;
-    background-color: rgba(0,0,0,0.7);
-    border-radius: 20px;
-}
-
-.divider-card {
-    border: 1px solid black;
-    width: 80%;
-    margin: 2rem 10% 1rem 10%;
-    background-color: black;
-}
-
-.heading-your-reviews {
-    text-transform: capitalize;
-    font-size: larger;
-}
-
 a {
     text-transform: none;
     text-align: center;
     text-decoration: none;
     color: white;
 }
-
+/* navbar styling */
+nav ul li.active {
+    background-color: rgba(0,0,0,0.3);
+} 
+.sidenav li.active {
+    background-color: rgba(0,0,0,0.3);
+}
+/* margins, padding */
+.no-padding {
+    padding: 0;
+}
+.margin-bottom {
+    margin-bottom: 4em;
+}
+.base-content {
+    margin-top: 5em;
+}
+/* changes to cards and headings */
+.material-icons.rating {
+    font-size: 1em;
+    color: gold;
+}
+.border-radius {
+    border-radius: 10px;
+}
+.nav-img {
+    max-width: 100%;
+}
+.invalid-input {
+    border-radius: 20px;
+    background-color: #ef5350;
+    color: antiquewhite;
+}
+.background-card {
+    padding:0.5rem;
+    margin: 0;
+    background-color: rgba(0,0,0,0.7);
+    border-radius: 30px;
+}
+.background-card-straight {
+    padding:0.5rem;
+    margin: 0 0 0.5rem 0;
+    background-color: rgba(0,0,0,0.7);
+    border-radius: 20px;
+}
+/* footer styling */
 .footer-link {
     min-width: 100%;
     margin-top: 0.25rem;
+}
+/* media queries */
+@media only screen and (min-width: 600px) {
+    .header-browse-game {
+        font-size: x-large;
+    }
 }

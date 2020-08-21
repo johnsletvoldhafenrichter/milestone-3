@@ -1,9 +1,8 @@
 from flask import render_template, session, request, redirect, url_for
 from bson.objectid import ObjectId
-
 from app import app
 from app.setup import DB_GAME_LIST, DB_USERS, DB_REVIEWS
-
+# rendering template for editing a game, only available for admin
 @app.route('/edit_game/<game_id>')
 def edit_game(game_id):
     if session['admin']:
@@ -11,7 +10,7 @@ def edit_game(game_id):
         return render_template('edit_game.html',
                                 game=game)
     return render_template('no_login.html')
-
+# updating database according to changes made in edit_game template, only available for admin
 @app.route('/update_game/<game_id>', methods=["POST"])
 def update_game(game_id):
     if session['admin']:
@@ -25,7 +24,7 @@ def update_game(game_id):
         })
         return redirect(url_for('admin_tab'))
     return render_template('no_login.html')
-
+# rendering template for editing a review
 @app.route('/edit_review/<review_id>')
 def edit_review(review_id):
     if session['username']:
@@ -34,7 +33,7 @@ def edit_review(review_id):
                                 review=review,
                                 gamelist=DB_GAME_LIST.find())
     return render_template('no_login.html')
-
+# updating database according to changes made in edit_review
 @app.route('/update_review/<review_id>', methods=["POST"])
 def update_review(review_id):
     if session['username']:
@@ -49,7 +48,7 @@ def update_review(review_id):
             return redirect(url_for('admin_tab'))
         return redirect(url_for('your_reviews'))
     return render_template('no_login.html')
-
+# rendering template for editing a user, only available for admin
 @app.route('/edit_user/<user_id>')
 def edit_user(user_id):
     if session['admin']:
@@ -57,7 +56,7 @@ def edit_user(user_id):
         return render_template('edit_user.html',
                                 user=user)
     return render_template('no_login.html')
-
+# updating database according to changes made in edit_user, only available for admin
 @app.route('/update_user/<user_id>/<user_name>', methods=["POST"])
 def update_user(user_id, user_name):
     if session['admin']:

@@ -7,15 +7,17 @@
                 <img src="{{ session['game_picture'] }}">
             </div>
             <div class="card-stacked">
-                <div class="card-content teal white-text center-align">
-                    <h5>{{ session['game_name'] }}</h5>
+                <div class="card-content teal header-browse-game white-text center-align">
+                    <p>{{ session['game_name'] }}</p>
                 </div>
-                <div class="card-content">                    
+                <div class="card-content">
                     <p>{{ session['game_description'] }}</p>
                 </div>
-                <div class="card-action teal">
-                    <div class="col s6 left-align"><a class="white-text" href="{{session['game_wiki_link']}}" target="_blank">Go to Wikipedia!</a></div>
-                    <div class="col s6 white-text right-align">Rated: {{ session['game_average'] }}/5<i class="material-icons rating">star_rate</i></div>
+                <div class="card-action teal center-align">
+                    <div class="col s12 m6"><a class="white-text" href="{{session['game_wiki_link']}}"
+                            target="_blank">Go to Wikipedia!</a></div>
+                    <div class="col s12 m6 white-text">Rated: {{ session['game_average'] }}/5<i
+                            class="material-icons rating">star_rate</i></div>
                 </div>
             </div>
         </div>
@@ -78,7 +80,6 @@
         </div>
     </form>
 </div>
-
 <!-- Sorting Navigation -->
 <div class="row">
     <div id="sorting" class="row">
@@ -96,7 +97,7 @@
                     <i class="material-icons right">sort</i>
                 </a>
             </div>
-        </div>        
+        </div>
         <div class="row col s12 m6">
             <div class="col s6">
                 <a href="{{url_for('sorting', el='game')}}" class="btn waves-effect waves-light">Game
@@ -111,175 +112,194 @@
         </div>
     </div>
 </div>
-    <div class="row center-align">
-        <h5>Total Results: {{ results }}</h5>
+<div class="row center-align">
+    <h5>Total Results: {{ results }}</h5>
+</div>
+{% if session['user_sort'] == -1 or session['user_sort'] == 1 %}
+<div class="row">
+    {% for review in review_users %}
+    <div class="col s12 m6">
+        <div class="card small">
+            <div class="card-content teal">
+                <span class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</span>
+            </div>
+            <div class="card-content">
+                <span class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i
+                        class="material-icons right">more_vert</i></span>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">{{ review.username }}'s Review:<i
+                        class="material-icons right">close</i></span>
+                <p>{{ review.description }}</p>
+            </div>
+            <div class="card-action teal center-align">
+                <div class="col s12 m6">
+                    <span class="white-text text-darken-4">From User: {{ review.username }}</span>
+                </div>
+                <div class="col s12 m6">
+                    <span class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i
+                            class="material-icons rating">star_rate</i></span>
+                </div>
+            </div>
+        </div>
     </div>
-    {% if session['user_sort'] == -1 or session['user_sort'] == 1 %}
-        <div class="row">
-            {% for review in review_users %}
-            <div class="col s12 m6">
-                <div class="card small">
-                    <div class="card-content teal">
-                    <span class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</span>
-                    </div>
-                    <div class="card-content">
-                    <span class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i class="material-icons right">more_vert</i></span>
-                    </div>
-                    <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4">{{ review.username }}'s Review:<i class="material-icons right">close</i></span>
-                    <p>{{ review.description }}</p>
-                    </div>
-                    <div class="card-action teal center-align">
-                        <div class="col s12 m6">
-                            <span class="white-text text-darken-4">From User: {{ review.username }}</span>
-                        </div>
-                        <div class="col s12 m6">
-                            <span class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i class="material-icons rating">star_rate</i></span>
-                        </div>
-                    </div>
+    {% endfor %}
+</div>
+{% elif session['rating_sort'] == -1 or session['rating_sort'] == 1 %}
+<div class="row">
+    {% for review in review_ratings %}
+    <div class="col s12 m6">
+        <div class="card small">
+            <div class="card-content teal">
+                <span class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</span>
+            </div>
+            <div class="card-content">
+                <span class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i
+                        class="material-icons right">more_vert</i></span>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">{{ review.username }}'s Review:<i
+                        class="material-icons right">close</i></span>
+                <p>{{ review.description }}</p>
+            </div>
+            <div class="card-action teal center-align">
+                <div class="col s12 m6">
+                    <span class="white-text text-darken-4">From User: {{ review.username }}</span>
+                </div>
+                <div class="col s12 m6">
+                    <span class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i
+                            class="material-icons rating">star_rate</i></span>
                 </div>
             </div>
-            {% endfor %}
         </div>
-    {% elif session['rating_sort'] == -1 or session['rating_sort'] == 1 %}
-        <div class="row">
-            {% for review in review_ratings %}
-            <div class="col s12 m6">
-                <div class="card small">
-                    <div class="card-content teal">
-                    <span class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</span>
-                    </div>
-                    <div class="card-content">
-                    <span class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i class="material-icons right">more_vert</i></span>
-                    </div>
-                    <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4">{{ review.username }}'s Review:<i class="material-icons right">close</i></span>
-                    <p>{{ review.description }}</p>
-                    </div>
-                    <div class="card-action teal center-align">
-                        <div class="col s12 m6">
-                            <span class="white-text text-darken-4">From User: {{ review.username }}</span>
-                        </div>
-                        <div class="col s12 m6">
-                            <span class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i class="material-icons rating">star_rate</i></span>
-                        </div>
-                    </div>
+    </div>
+    {% endfor %}
+</div>
+{% elif session['game_sort'] == -1 or session['game_sort'] == 1 %}
+<div class="row">
+    {% for review in review_games %}
+    <div class="col s12 m6">
+        <div class="card small">
+            <div class="card-content teal">
+                <span class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</span>
+            </div>
+            <div class="card-content">
+                <span class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i
+                        class="material-icons right">more_vert</i></span>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">{{ review.username }}'s Review:<i
+                        class="material-icons right">close</i></span>
+                <p>{{ review.description }}</p>
+            </div>
+            <div class="card-action teal center-align">
+                <div class="col s12 m6">
+                    <span class="white-text text-darken-4">From User: {{ review.username }}</span>
+                </div>
+                <div class="col s12 m6">
+                    <span class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i
+                            class="material-icons rating">star_rate</i></span>
                 </div>
             </div>
-            {% endfor %}
         </div>
-    {% elif session['game_sort'] == -1 or session['game_sort'] == 1 %}
-        <div class="row">
-            {% for review in review_games %}
-            <div class="col s12 m6">
-                <div class="card small">
-                    <div class="card-content teal">
-                    <span class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</span>
-                    </div>
-                    <div class="card-content">
-                    <span class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i class="material-icons right">more_vert</i></span>
-                    </div>
-                    <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4">{{ review.username }}'s Review:<i class="material-icons right">close</i></span>
-                    <p>{{ review.description }}</p>
-                    </div>
-                    <div class="card-action teal center-align">
-                        <div class="col s12 m6">
-                            <span class="white-text text-darken-4">From User: {{ review.username }}</span>
-                        </div>
-                        <div class="col s12 m6">
-                            <span class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i class="material-icons rating">star_rate</i></span>
-                        </div>
-                    </div>
+    </div>
+    {% endfor %}
+</div>
+{% elif session['review_sort'] == -1 or session['review_sort'] == 1 %}
+<div class="row">
+    {% for review in review_latest %}
+    <div class="col s12 m6">
+        <div class="card small">
+            <div class="card-content teal">
+                <span class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</span>
+            </div>
+            <div class="card-content">
+                <span class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i
+                        class="material-icons right">more_vert</i></span>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">{{ review.username }}'s Review:<i
+                        class="material-icons right">close</i></span>
+                <p>{{ review.description }}</p>
+            </div>
+            <div class="card-action teal center-align">
+                <div class="col s12 m6">
+                    <span class="white-text text-darken-4">From User: {{ review.username }}</span>
+                </div>
+                <div class="col s12 m6">
+                    <span class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i
+                            class="material-icons rating">star_rate</i></span>
                 </div>
             </div>
-            {% endfor %}
         </div>
-    {% elif session['review_sort'] == -1 or session['review_sort'] == 1 %}
-        <div class="row">
-            {% for review in review_latest %}
-            <div class="col s12 m6">
-                <div class="card small">
-                    <div class="card-content teal">
-                    <span class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</span>
-                    </div>
-                    <div class="card-content">
-                    <span class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i class="material-icons right">more_vert</i></span>
-                    </div>
-                    <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4">{{ review.username }}'s Review:<i class="material-icons right">close</i></span>
-                    <p>{{ review.description }}</p>
-                    </div>
-                    <div class="card-action teal center-align">
-                        <div class="col s12 m6">
-                            <span class="white-text text-darken-4">From User: {{ review.username }}</span>
-                        </div>
-                        <div class="col s12 m6">
-                            <span class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i class="material-icons rating">star_rate</i></span>
-                        </div>
-                    </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="row">
+    {% for review in all_reviews %}
+    <div class="col s12 m6">
+        <div class="card small">
+            <div class="card-content teal">
+                <span class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</span>
+            </div>
+            <div class="card-content">
+                <span class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i
+                        class="material-icons right">more_vert</i></span>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">{{ review.username }}'s Review:<i
+                        class="material-icons right">close</i></span>
+                <p>{{ review.description }}</p>
+            </div>
+            <div class="card-action teal center-align">
+                <div class="col s12 m6">
+                    <span class="white-text text-darken-4">From User: {{ review.username }}</span>
+                </div>
+                <div class="col s12 m6">
+                    <span class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i
+                            class="material-icons rating">star_rate</i></span>
                 </div>
             </div>
-            {% endfor %}
         </div>
-    {% else %}
-        <div class="row">
-            {% for review in all_reviews %}
-            <div class="col s12 m6">
-                <div class="card small">
-                    <div class="card-content teal">
-                    <span class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</span>
-                    </div>
-                    <div class="card-content">
-                    <span class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i class="material-icons right">more_vert</i></span>
-                    </div>
-                    <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4">{{ review.username }}'s Review:<i class="material-icons right">close</i></span>
-                    <p>{{ review.description }}</p>
-                    </div>
-                    <div class="card-action teal center-align">
-                        <div class="col s12 m6">
-                            <span class="white-text text-darken-4">From User: {{ review.username }}</span>
-                        </div>
-                        <div class="col s12 m6">
-                            <span class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i class="material-icons rating">star_rate</i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 {% if results > 0 %}
-    <!-- Pagination -->
-    <div class="col s12">
-        <div class="col s12 m6 center-align">
-            <ul class="pagination">                
-                <p class="center-align">Page Number:</p>
-                {% if PAGE_NUMBER == 1 %}
-                <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></a></li>
-                {% else %}
-                <li class="waves-effect"><a href="{{ url_for('page_count', num=(PAGE_NUMBER-1), where='browse') }}"><i class="material-icons">chevron_left</i></a></li>
-                {% endif %}
-                {% for page in range(pages) %}
-                <li class="waves-effect {% if (session['PAGE_NUMBER']-1) == page %}active{% endif %}"><a href="{{ url_for('page_count', num=(page+1), where='browse') }}">{{page+1}}</a></li>
-                {%endfor%}
-                {% if PAGE_NUMBER == pages %}
-                <li class="waves-effect disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-                {% else %}
-                <li class="waves-effect"><a href="{{ url_for('page_count', num=PAGE_NUMBER+1, where='browse' )}}"><i class="material-icons">chevron_right</i></a></li>
-                {% endif %}
-            </ul>
-        </div>
-        <div class="col s12 m6 center-align">
-            <ul class="pagination">
-                <p class="center-align">Items per Page:</p>
-                {% set limit=[6, 12, 24, 48, 96] %}
-                {% for i in limit %}
-                <li class="waves-effect {% if session['LIMIT'] == i %}active{% endif %}"><a href="{{url_for('change_limit', num=i, where='browse')}}">{{i}}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
+<!-- Pagination -->
+<div class="col s12">
+    <div class="col s12 m6 center-align">
+        <ul class="pagination">
+            <p class="center-align">Page Number:</p>
+            {% if PAGE_NUMBER == 1 %}
+            <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></a></li>
+            {% else %}
+            <li class="waves-effect"><a href="{{ url_for('page_count', num=(PAGE_NUMBER-1), where='browse') }}"><i
+                        class="material-icons">chevron_left</i></a></li>
+            {% endif %}
+            {% for page in range(pages) %}
+            <li class="waves-effect {% if (session['PAGE_NUMBER']-1) == page %}active{% endif %}"><a
+                    href="{{ url_for('page_count', num=(page+1), where='browse') }}">{{page+1}}</a></li>
+            {%endfor%}
+            {% if PAGE_NUMBER == pages %}
+            <li class="waves-effect disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+            {% else %}
+            <li class="waves-effect"><a href="{{ url_for('page_count', num=PAGE_NUMBER+1, where='browse' )}}"><i
+                        class="material-icons">chevron_right</i></a></li>
+            {% endif %}
+        </ul>
     </div>
+    <div class="col s12 m6 center-align">
+        <ul class="pagination">
+            <p class="center-align">Items per Page:</p>
+            {% set limit=[6, 12, 24, 48, 96] %}
+            {% for i in limit %}
+            <li class="waves-effect {% if session['LIMIT'] == i %}active{% endif %}"><a
+                    href="{{url_for('change_limit', num=i, where='browse')}}">{{i}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endif %}
 {% endblock %}

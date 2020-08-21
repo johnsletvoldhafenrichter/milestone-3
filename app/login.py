@@ -1,9 +1,7 @@
 import bcrypt
 from flask import render_template, redirect, request, url_for, request, session
-
 from app import app
 from app.setup import DB_USERS, DB_GAME_LIST, DB_REVIEWS, DB_COUNTER, admin_password, admin_user, DB_GAME_SUGGESTION
-
 # Sign up and Login pages and authentication
 @app.route('/sign_up', methods=['POST', 'GET'])
 def sign_up():
@@ -24,7 +22,6 @@ def sign_up():
             return redirect(url_for('index'))
         return render_template('fail_sign_up.html')
     return render_template('sign_up.html')
-
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
@@ -41,17 +38,14 @@ def login():
                 return redirect(url_for('index'))
         return render_template('fail_login.html')
     return render_template('login.html')
-
+# clear all sessions and therefor be logged out
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('index'))
-
-
-# root access and home page
+# root/admin access and home page for admin
 @app.route('/admin_tab')
 def admin_tab():
-    print(session['SKIP'])
     if session['admin']:
         return render_template('admin_tab.html')
     return render_template('no_login.html')

@@ -30,43 +30,44 @@
 {% endif %}
 <div class="row">
     <form action="{{ url_for('your_reviews') }}" method="POST">
-            <div class="input-field col s12 m6">
-                <select name="browse_rating" id="browse_rating">
-                    {% if session['browse_rating'] %}
-                    <option value="{{ session['browse_rating'] }}" selected>{{ session['browse_rating'] }}</option>
-                    {% else %}
-                    <option value="" selected>Choose Rating</option>
-                    {% endif %}
-                    {% set ratings=[1, 2, 3, 4, 5] %}
-                    {% for num in ratings %}
-                    <option value="{{num}}">{{num}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="input-field col s12 m6">
-                <select name="game_select" id="game_select" class="icons">
-                    {% if session['game_name'] %}
-                    <option value="{{ session['game_json'] }}" selected>{{ session['game_name'] }}</option>
-                    {% else %}
-                    <option value="" selected>Choose your game</option>
-                    {% endif %}
-                    {% for game in games %}
-                    <option value="{{ game }}" data-icon="{{ game.picture_link }}">{{ game.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+        <div class="input-field col s12 m6">
+            <select name="browse_rating" id="browse_rating">
+                {% if session['browse_rating'] %}
+                <option value="{{ session['browse_rating'] }}" selected>{{ session['browse_rating'] }}</option>
+                {% else %}
+                <option value="" selected>Choose Rating</option>
+                {% endif %}
+                {% set ratings=[1, 2, 3, 4, 5] %}
+                {% for num in ratings %}
+                <option value="{{num}}">{{num}}</option>
+                {% endfor %}
+            </select>
         </div>
-        <div class="row">
-            <div class="col s12 right-align">
-                <button class="btn waves-effect waves-light" id="search" type="submit" name="action">Search
-                    <i class="material-icons right">search</i>
-                </button>
-                <a href="{{url_for('clear_sessions', where='your_reviews')}}" class="btn red waves-effect waves-light">Clear Search
-                    <i class="material-icons right">delete</i>
-                </a>
-            </div>
+        <div class="input-field col s12 m6">
+            <select name="game_select" id="game_select" class="icons">
+                {% if session['game_name'] %}
+                <option value="{{ session['game_json'] }}" selected>{{ session['game_name'] }}</option>
+                {% else %}
+                <option value="" selected>Choose your game</option>
+                {% endif %}
+                {% for game in games %}
+                <option value="{{ game }}" data-icon="{{ game.picture_link }}">{{ game.name }}</option>
+                {% endfor %}
+            </select>
         </div>
-    </form>
+</div>
+<div class="row">
+    <div class="col s12 right-align">
+        <button class="btn waves-effect waves-light" id="search" type="submit" name="action">Search
+            <i class="material-icons right">search</i>
+        </button>
+        <a href="{{url_for('clear_sessions', where='your_reviews')}}" class="btn red waves-effect waves-light">Clear
+            Search
+            <i class="material-icons right">delete</i>
+        </a>
+    </div>
+</div>
+</form>
 </div>
 <div class="row">
     {% if result %}
@@ -76,7 +77,6 @@
         </div>
     </div>
     {% endif %}
-
     {% for review in ureviews %}
     <div class="col s12 m6">
         <div class="card small">
@@ -84,7 +84,8 @@
                 <div class="card-title white-text activator text-darken-4 center-align">{{ review.game_name }}</div>
             </div>
             <div class="card-content">
-                <div class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i class="material-icons right">more_vert</i></div>
+                <div class="card-title activator black-text text-darken-4 truncate">{{ review.description }}<i
+                        class="material-icons right">more_vert</i></div>
             </div>
             <div class="card-reveal">
                 <div class="card-title grey-text text-darken-4">
@@ -109,7 +110,8 @@
                     <div class="white-text text-darken-4">From User: {{ review.username }}</div>
                 </div>
                 <div class="col s12 m6">
-                    <div class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i class="material-icons rating">star_rate</i></div>
+                    <div class="card-footer white-text text-darken-4">User Rated: {{ review.rating }}/5<i
+                            class="material-icons rating">star_rate</i></div>
                 </div>
             </div>
         </div>
@@ -118,20 +120,25 @@
     <!-- Pagination -->
     <div class="col s12">
         <div class="col s12 m6 center-align">
-            <ul class="pagination">                
+            <ul class="pagination">
                 <p class="center-align">Page Number:</p>
                 {% if PAGE_NUMBER == 1 %}
                 <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></a></li>
                 {% else %}
-                <li class="waves-effect"><a href="{{ url_for('page_count', num=(PAGE_NUMBER-1), where='your_reviews') }}"><i class="material-icons">chevron_left</i></a></li>
+                <li class="waves-effect"><a
+                        href="{{ url_for('page_count', num=(PAGE_NUMBER-1), where='your_reviews') }}"><i
+                            class="material-icons">chevron_left</i></a></li>
                 {% endif %}
                 {% for page in range(pages) %}
-                <li class="waves-effect {% if (session['PAGE_NUMBER']-1) == page %}active{% endif %}"><a href="{{ url_for('page_count', num=(page+1), where='your_reviews') }}">{{page+1}}</a></li>
+                <li class="waves-effect {% if (session['PAGE_NUMBER']-1) == page %}active{% endif %}"><a
+                        href="{{ url_for('page_count', num=(page+1), where='your_reviews') }}">{{page+1}}</a></li>
                 {%endfor%}
                 {% if PAGE_NUMBER == pages %}
                 <li class="waves-effect disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
                 {% else %}
-                <li class="waves-effect"><a href="{{ url_for('page_count', num=PAGE_NUMBER+1, where='your_reviews' )}}"><i class="material-icons">chevron_right</i></a></li>
+                <li class="waves-effect"><a
+                        href="{{ url_for('page_count', num=PAGE_NUMBER+1, where='your_reviews' )}}"><i
+                            class="material-icons">chevron_right</i></a></li>
                 {% endif %}
             </ul>
         </div>
@@ -140,7 +147,8 @@
                 <p class="center-align">Items per Page:</p>
                 {% set limit=[6, 12, 24, 48, 96] %}
                 {% for i in limit %}
-                <li class="waves-effect {% if session['LIMIT'] == i %}active{% endif %}"><a href="{{url_for('change_limit', num=i, where='your_reviews')}}">{{i}}</a></li>
+                <li class="waves-effect {% if session['LIMIT'] == i %}active{% endif %}"><a
+                        href="{{url_for('change_limit', num=i, where='your_reviews')}}">{{i}}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -150,8 +158,8 @@
             <i class="large material-icons">mode_edit</i>
         </a>
         <ul>
-            <li><a href="{{ url_for('add_review') }}" class="btn-floating tooltipped green darken-1" data-position="left"
-                    data-tooltip="Add Review"><i class="material-icons">grading</i></a></li>
+            <li><a href="{{ url_for('add_review') }}" class="btn-floating tooltipped green darken-1"
+                    data-position="left" data-tooltip="Add Review"><i class="material-icons">grading</i></a></li>
             <li><a href="{{ url_for('suggest_game') }}" class="btn-floating tooltipped red" data-position="left"
                     data-tooltip="Suggest A Game"><i class="material-icons">games</i></a></li>
         </ul>
