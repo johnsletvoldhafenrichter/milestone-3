@@ -73,7 +73,7 @@
     <div class="col s12 m6 center-align">
         <ul class="pagination">
             <p class="center-align">Items per Page:</p>
-            {% set limit=[2, 6, 12, 24, 48, 96] %}
+            {% set limit=[6, 12, 24, 48, 96] %}
             {% for i in limit %}
             <li class="waves-effect {% if session['LIMIT'] == i %}active{% endif %}"><a
                     href="{{url_for('change_limit', num=i, where='admin_tab_suggestions')}}">{{i}}</a></li>
