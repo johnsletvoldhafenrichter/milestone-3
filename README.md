@@ -5,9 +5,17 @@ This is my third milestone project. I decided to create a gaming review website 
 
 This project includes interactivity, database management, pagination and ease of use. It is easy to navigate, easy to understand and has been testet by several people before publishing.
 
+## Table of Contents
 
-## ![Wireframes] for the project
-![Home]
+1. **[UX](#UX)**
+    **[Wireframes](#wireframes)**
+    * * **[Home](#Home)**
+
+
+
+## Wireframes for the project
+
+### Home
 <p align="center">
   <img alt="login" src="/wireframes/home.png">
   <img alt="login" src="/wireframes/home_mobile.png">
