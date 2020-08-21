@@ -38,7 +38,7 @@
     <ul class="pagination">
       <p class="center-align">Page Number:</p>
       {% if PAGE_NUMBER == 1 %}
-      <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></a></li>
+      <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></li>
       {% else %}
       <li class="waves-effect"><a href="{{ url_for('page_count', num=(PAGE_NUMBER-1), where='all_games') }}"><i
             class="material-icons">chevron_left</i></a></li>

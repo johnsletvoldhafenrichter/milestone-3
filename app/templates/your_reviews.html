@@ -1,7 +1,7 @@
 {% extends 'base.html'%} {% block content %}
 <div class="container">
     <div class="row white-text card-panel teal lighten-2 margin-bottom center-align border-radius">
-        <h5>Welcome {{ session['username'] }}! These are your reviews!</h6>
+        <h5>Welcome {{ session['username'] }}! These are your reviews!</h5>
     </div>
 </div>
 <div class="row center-align">
@@ -28,8 +28,8 @@
     </div>
 </div>
 {% endif %}
-<div class="row">
-    <form action="{{ url_for('your_reviews') }}" method="POST">
+<form action="{{ url_for('your_reviews') }}" method="POST">
+    <div class="row">
         <div class="input-field col s12 m6">
             <select name="browse_rating" id="browse_rating">
                 {% if session['browse_rating'] %}
@@ -55,20 +55,19 @@
                 {% endfor %}
             </select>
         </div>
-</div>
-<div class="row">
-    <div class="col s12 right-align">
-        <button class="btn waves-effect waves-light" id="search" type="submit" name="action">Search
-            <i class="material-icons right">search</i>
-        </button>
-        <a href="{{url_for('clear_sessions', where='your_reviews')}}" class="btn red waves-effect waves-light">Clear
-            Search
-            <i class="material-icons right">delete</i>
-        </a>
     </div>
-</div>
+    <div class="row">
+        <div class="col s12 right-align">
+            <button class="btn waves-effect waves-light" id="search" type="submit" name="action">Search
+                <i class="material-icons right">search</i>
+            </button>
+            <a href="{{url_for('clear_sessions', where='your_reviews')}}" class="btn red waves-effect waves-light">Clear
+                Search
+                <i class="material-icons right">delete</i>
+            </a>
+        </div>
+    </div>
 </form>
-</div>
 <div class="row">
     {% if result %}
     <div class="row">
@@ -123,7 +122,7 @@
             <ul class="pagination">
                 <p class="center-align">Page Number:</p>
                 {% if PAGE_NUMBER == 1 %}
-                <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></a></li>
+                <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></li>
                 {% else %}
                 <li class="waves-effect"><a
                         href="{{ url_for('page_count', num=(PAGE_NUMBER-1), where='your_reviews') }}"><i

@@ -4,7 +4,7 @@
     <div class="col s12">
         <div class="card medium horizontal">
             <div class="card-image">
-                <img src="{{ session['game_picture'] }}">
+                <img src="{{ session['game_picture'] }}" alt="game picture">
             </div>
             <div class="card-stacked">
                 <div class="card-content teal header-browse-game white-text center-align">
@@ -273,7 +273,7 @@
         <ul class="pagination">
             <p class="center-align">Page Number:</p>
             {% if PAGE_NUMBER == 1 %}
-            <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></a></li>
+            <li class="waves-effect disabled"><a href="#!"></a><i class="material-icons">chevron_left</i></li>
             {% else %}
             <li class="waves-effect"><a href="{{ url_for('page_count', num=(PAGE_NUMBER-1), where='browse') }}"><i
                         class="material-icons">chevron_left</i></a></li>
