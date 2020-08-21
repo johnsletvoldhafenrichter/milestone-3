@@ -15,19 +15,13 @@
         </div>
         <div class="row">
             <div class="col s6 left-align">
-                <label>
-                    <input type="checkbox" class="filled-in" />
-                    <span>Remember me!</span>
-                </label>
+                <a href="{{url_for('sign_up')}}" class="waves-effect waves-light btn-large hoverable">Sign Up!</a>
             </div>
             <div class="col s6 right-align">
                 <button class="btn waves-effect waves-light hoverable" type="submit" name="action">Submit
                     <i class="material-icons right">send</i>
                 </button>
             </div>
-        </div>
-        <div class="col s12 center-align">
-            <a href="{{url_for('sign_up')}}" class="waves-effect waves-light btn-large hoverable">Sign Up!</a>
         </div>
     </form>
 </div>
