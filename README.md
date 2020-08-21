@@ -8,7 +8,7 @@ This project includes interactivity, database management, pagination and ease of
 ## Table of Contents
 
 1. **[UX](#UX)**
-    **[Wireframes](#wireframes)**
+    * **[Wireframes](#wireframes)**
     * * **[Home](#Home)**
 
 
@@ -17,8 +17,8 @@ This project includes interactivity, database management, pagination and ease of
 
 ### Home
 <p align="center">
-  <img alt="login" src="/wireframes/home.png">
-  <img alt="login" src="/wireframes/home_mobile.png">
+  <img alt="login" src="/app/wireframes/home.png">
+  <img alt="login" src="/app/wireframes/home_mobile.png">
 </p>
 
 ![Browse]
