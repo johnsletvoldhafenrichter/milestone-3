@@ -108,6 +108,8 @@ The project is deployed to heroku under:
   <img alt="login" src="/app/wireframes/sign_up_mobile.png">
 </p>
 
+I deviated a lot in the end from my wireframes in order to make my webpage better with more functionality, better searches and adding a admin tab which i did not consider in the start of this project.
+
 ## User Stories
 
 As a user, I want to be able to:
